@@ -14,6 +14,10 @@ parserOptions:
 plugins:
   - '@typescript-eslint'
   - jest
+settings:
+  import/resolver:
+    node:
+      extensions: ['.js', '.jsx', '.ts', '.tsx']
 rules:
   indent:
     - error
