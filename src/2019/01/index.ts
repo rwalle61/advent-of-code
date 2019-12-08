@@ -1,6 +1,9 @@
-const calculateFuelRequiredForMass = (mass) => Math.floor(mass / 3) - 2;
+import { sum } from '../../utils';
 
-const sum = (array) => array.reduce((a, b) => a + b, 0);
+const calculateFuelRequiredForMass = (mass) => {
+  const fuelRequired = Math.floor(mass / 3) - 2;
+  return (fuelRequired > 0) ? fuelRequired : 0;
+};
 
 const calculateFuelRequiredForMasses = (inputString) => {
   const moduleMasses = inputString.trim().split('\n');
@@ -9,13 +12,11 @@ const calculateFuelRequiredForMasses = (inputString) => {
 };
 
 const calculateFuelRequiredForMassAndItsFuel = (mass) => {
-  let totalFuelRequired = 0;
-  let fuelRequiredForMass = calculateFuelRequiredForMass(mass);
-  while (fuelRequiredForMass > 0) {
-    totalFuelRequired += fuelRequiredForMass;
-    fuelRequiredForMass = calculateFuelRequiredForMass(fuelRequiredForMass);
+  const fuelRequired = calculateFuelRequiredForMass(mass);
+  if (fuelRequired) {
+    return fuelRequired + calculateFuelRequiredForMassAndItsFuel(fuelRequired);
   }
-  return totalFuelRequired;
+  return fuelRequired;
 };
 
 const calculateFuelRequiredForMassesAndTheirFuel = (inputString) => {
