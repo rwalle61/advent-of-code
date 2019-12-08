@@ -28,18 +28,20 @@ const runInstruction = (initialState, instructionPointer) => {
   return newState;
 };
 
-const instructionValues = 4;
+const numInstructionValues = 4;
+const minInputValue = 0;
+const maxInputValue = 99;
 
 const runProgram = (initialState) => {
   let instructionPointer = 0;
   let currentState = deepClone(initialState);
-  while ((instructionPointer + instructionValues) <= initialState.length) {
+  while ((instructionPointer + numInstructionValues) <= initialState.length) {
     const newState = runInstruction(currentState, instructionPointer);
     if (newState === -1) {
       return currentState;
     }
     currentState = deepClone(newState);
-    instructionPointer += instructionValues;
+    instructionPointer += numInstructionValues;
   }
   return currentState;
 };
@@ -56,8 +58,34 @@ const runProgramFromFileWithInputs = (fileData, input1, input2) => {
   return runProgram(initialState);
 };
 
+const findInputsThatProduceOutput = (programFileData, targetOutput) => {
+  for (let i = minInputValue; i < maxInputValue; i++) {
+    for (let j = minInputValue; j < maxInputValue; j++) {
+      const finalState = runProgramFromFileWithInputs(programFileData, i, j);
+      const output = finalState[0];
+      if (output === targetOutput) {
+        return [i, j];
+      }
+    }
+  }
+  throw new Error();
+};
+
+const answerPart1 = (programFileData, input1, input2) => {
+  const finalState = runProgramFromFileWithInputs(programFileData, input1, input2);
+  return finalState[0];
+};
+
+const answerPart2 = (programFileData, targetOutput) => {
+  const [noun, verb] = findInputsThatProduceOutput(programFileData, targetOutput);
+  return (100 * noun) + verb;
+};
+
 export {
   runProgram,
   runProgramFromFile,
   runProgramFromFileWithInputs,
+  findInputsThatProduceOutput,
+  answerPart1,
+  answerPart2,
 };
