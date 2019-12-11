@@ -1,0 +1,7 @@
+const foo = () => {
+
+};
+
+export {
+
+};
