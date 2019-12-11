@@ -51,3 +51,5 @@ rules:
     - error
   keyword-spacing:
     - error
+  implicit-arrow-linebreak:
+    - off

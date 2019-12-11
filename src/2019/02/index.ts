@@ -1,4 +1,4 @@
-const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
+import { deepClone } from '../../utils';
 
 const parseFile = (fileData) => fileData.trim().split(',').map((n) => parseInt(n, 10));
 
