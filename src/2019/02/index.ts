@@ -1,6 +1,9 @@
 import { deepClone } from '../../utils';
 
-const stringArrayToIntArray = (stateString) => stateString.split(',').map((n) => parseInt(n, 10));
+const initialInstructionPointerAddress = 0;
+const numInstructionValues = 4;
+const minParamValue = 0;
+const maxParamValue = 99;
 
 const STOP_STATE = -1;
 
@@ -9,6 +12,8 @@ const opcodes = {
   MULTIPLY_PARAMS: 2,
   STOP: 99,
 };
+
+const stringArrayToIntArray = (stateString) => stateString.split(',').map((n) => parseInt(n, 10));
 
 const runInstruction = (initialState, instructionPointer) => {
   const opcode = initialState[instructionPointer];
@@ -35,11 +40,6 @@ const runInstruction = (initialState, instructionPointer) => {
   }
   return newState;
 };
-
-const initialInstructionPointerAddress = 0;
-const numInstructionValues = 4;
-const minParamValue = 0;
-const maxParamValue = 99;
 
 const runProgram = (initialState) => {
   let instructionPointer = initialInstructionPointerAddress;
@@ -70,7 +70,11 @@ const runProgramFromStateStringWithParams = (stateString, nounParam, verbParam) 
 const findParamsThatProduceOutput = (programStateString, targetOutput) => {
   for (let nounParam = minParamValue; nounParam < maxParamValue; nounParam++) {
     for (let verbParam = minParamValue; verbParam < maxParamValue; verbParam++) {
-      const finalState = runProgramFromStateStringWithParams(programStateString, nounParam, verbParam);
+      const finalState = runProgramFromStateStringWithParams(
+        programStateString,
+        nounParam,
+        verbParam,
+      );
       const output = finalState[0];
       if (output === targetOutput) {
         return [nounParam, verbParam];
