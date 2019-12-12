@@ -6,8 +6,8 @@ describe('day X', () => {
   describe('part 1', () => {
     describe('', () => {
       test('', () => {
-        expect().toEqual();
-        expect().toStrictEqual();
+        expect(1).toEqual(1);
+        expect(1).toStrictEqual(1);
       });
     });
   });
