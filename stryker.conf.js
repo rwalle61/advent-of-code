@@ -1,7 +1,13 @@
 module.exports = (config) => {
   config.set({
+    // uncomment to run only a subset of tests
+    // files: [
+    //   'src/**/02/*',
+    //   'src/**/utils/*.ts',
+    // ],
     mutate: [
-      'src/**/index.ts',
+      'src/**/*.ts',
+      '!src/**/*.test.ts',
     ],
     coverageAnalysis: 'off', // Coverage analysis with a transpiler is not supported a.t.m.
     tsconfigFile: 'tsconfig.json',
@@ -11,9 +17,8 @@ module.exports = (config) => {
     ],
     packageManager: 'npm',
     reporters: ['clear-text', 'dots'], // see https://stryker-mutator.io/stryker/plugins#reporters
-
     testRunner: 'jest',
     thresholds: { high: 100, low: 99, break: 95 },
-    maxConcurrentTestRunners: 2, // resolves issue with tests not completing. See: https://github.com/stryker-mutator/stryker/issues/1542#issuecomment-495477158
+    timeoutFactor: 15,
   });
 };
