@@ -35,7 +35,6 @@ const isValidPassword2 = (number) => {
   const arr = number.toString().split('');
   let are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = false;
   for (let i = 0; i < arr.length; i++) {
-    const digitOnLeft2 = toInt(arr[i - 2]);
     const digitOnLeft1 = toInt(arr[i - 1]);
     const digit = toInt(arr[i]);
     const digitOnRight1 = toInt(arr[i + 1]);
@@ -46,15 +45,6 @@ const isValidPassword2 = (number) => {
         if (digitOnRight1 === digitOnRight2) {
           are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = false;
         } else if (digit === digitOnLeft1) {
-          are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = false;
-        } else {
-          are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = true;
-        }
-      }
-      if (digit === digitOnLeft1) {
-        if (digitOnLeft1 === digitOnLeft2) {
-          are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = false;
-        } else if (digit === digitOnRight1) {
           are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = false;
         } else {
           are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = true;
