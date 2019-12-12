@@ -1,6 +1,6 @@
 import { deepClone } from '../../utils';
 
-const parseFile = (fileData) => fileData.trim().split(',').map((n) => parseInt(n, 10));
+const stringArrayToIntArray = (stateString) => stateString.split(',').map((n) => parseInt(n, 10));
 
 const runInstruction = (initialState, instructionPointer) => {
   const opcode = initialState[instructionPointer];
@@ -29,8 +29,8 @@ const runInstruction = (initialState, instructionPointer) => {
 };
 
 const numInstructionValues = 4;
-const minInputValue = 0;
-const maxInputValue = 99;
+const minParamValue = 0;
+const maxParamValue = 99;
 
 const runProgram = (initialState) => {
   let instructionPointer = 0;
@@ -46,46 +46,46 @@ const runProgram = (initialState) => {
   return currentState;
 };
 
-const runProgramFromFile = (fileData) => {
-  const initialState = parseFile(fileData);
+const runProgramFromStateString = (stateString) => {
+  const initialState = stringArrayToIntArray(stateString);
   return runProgram(initialState);
 };
 
-const runProgramFromFileWithInputs = (fileData, input1, input2) => {
-  const initialState = parseFile(fileData);
-  initialState[1] = input1;
-  initialState[2] = input2;
+const runProgramFromStateStringWithParams = (stateString, nounParam, verbParam) => {
+  const initialState = stringArrayToIntArray(stateString);
+  initialState[1] = nounParam;
+  initialState[2] = verbParam;
   return runProgram(initialState);
 };
 
-const findInputsThatProduceOutput = (programFileData, targetOutput) => {
-  for (let i = minInputValue; i < maxInputValue; i++) {
-    for (let j = minInputValue; j < maxInputValue; j++) {
-      const finalState = runProgramFromFileWithInputs(programFileData, i, j);
+const findParamsThatProduceOutput = (programStateString, targetOutput) => {
+  for (let nounParam = minParamValue; nounParam < maxParamValue; nounParam++) {
+    for (let verbParam = minParamValue; verbParam < maxParamValue; verbParam++) {
+      const finalState = runProgramFromStateStringWithParams(programStateString, nounParam, verbParam);
       const output = finalState[0];
       if (output === targetOutput) {
-        return [i, j];
+        return [nounParam, verbParam];
       }
     }
   }
   throw new Error();
 };
 
-const answerPart1 = (programFileData, input1, input2) => {
-  const finalState = runProgramFromFileWithInputs(programFileData, input1, input2);
+const runProgramAndGetFirstValue = (programStateString, nounParam, verbParam) => {
+  const finalState = runProgramFromStateStringWithParams(programStateString, nounParam, verbParam);
   return finalState[0];
 };
 
-const answerPart2 = (programFileData, targetOutput) => {
-  const [noun, verb] = findInputsThatProduceOutput(programFileData, targetOutput);
-  return (100 * noun) + verb;
+const answerPart2 = (programStateString, targetOutput) => {
+  const [nounParam, verbParam] = findParamsThatProduceOutput(programStateString, targetOutput);
+  return (100 * nounParam) + verbParam;
 };
 
 export {
   runProgram,
-  runProgramFromFile,
-  runProgramFromFileWithInputs,
-  findInputsThatProduceOutput,
-  answerPart1,
+  runProgramFromStateString,
+  runProgramFromStateStringWithParams,
+  findParamsThatProduceOutput,
+  runProgramAndGetFirstValue,
   answerPart2,
 };
