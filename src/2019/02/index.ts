@@ -2,6 +2,14 @@ import { deepClone } from '../../utils';
 
 const stringArrayToIntArray = (stateString) => stateString.split(',').map((n) => parseInt(n, 10));
 
+const STOP_STATE = -1;
+
+const opcodes = {
+  ADD_PARAMS: 1,
+  MULTIPLY_PARAMS: 2,
+  STOP: 99,
+};
+
 const runInstruction = (initialState, instructionPointer) => {
   const opcode = initialState[instructionPointer];
   const addressOfParam1 = initialState[instructionPointer + 1];
@@ -14,30 +22,31 @@ const runInstruction = (initialState, instructionPointer) => {
   const newState = deepClone(initialState);
 
   switch (opcode) {
-    case 1:
+    case opcodes.ADD_PARAMS:
       newState[addressOfOutput] = param1 + param2;
       break;
-    case 2:
+    case opcodes.MULTIPLY_PARAMS:
       newState[addressOfOutput] = param1 * param2;
       break;
-    case 99:
-      return -1;
+    case opcodes.STOP:
+      return STOP_STATE;
     default:
       throw new Error();
   }
   return newState;
 };
 
+const initialInstructionPointerAddress = 0;
 const numInstructionValues = 4;
 const minParamValue = 0;
 const maxParamValue = 99;
 
 const runProgram = (initialState) => {
-  let instructionPointer = 0;
+  let instructionPointer = initialInstructionPointerAddress;
   let currentState = deepClone(initialState);
   while ((instructionPointer + numInstructionValues) <= initialState.length) {
     const newState = runInstruction(currentState, instructionPointer);
-    if (newState === -1) {
+    if (newState === STOP_STATE) {
       return currentState;
     }
     currentState = deepClone(newState);
