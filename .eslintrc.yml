@@ -53,3 +53,5 @@ rules:
     - error
   implicit-arrow-linebreak:
     - off
+  max-len:
+    - off

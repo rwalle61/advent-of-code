@@ -4,7 +4,7 @@ import {
   runProgramFromStateStringWithParams,
   findParamsThatProduceOutput,
   runProgramAndGetFirstValue,
-  answerPart2,
+  answerDay2Part2,
 } from '.';
 
 const part1ExampleInput = '1,9,10,3,2,3,11,0,99,30,40,50';
@@ -66,7 +66,7 @@ describe('day 2', () => {
       });
       test('(<puzzleInput>)', () => {
         expect(runProgramFromStateStringWithParams(puzzleInput, 12, 2).newState)
-          .toStrictEqual([3166704, 12, 2, 2, 1, 1, 2, 3, 1, 3, 4, 3, 1, 5, 0, 3, 2, 1, 9, 36, 1, 19, 5, 37, 2, 6, 23, 74, 1, 6, 27, 76, 2, 31, 9, 228, 1, 35, 6, 230, 1, 10, 39, 234, 2, 9, 43, 702, 1, 5, 47, 703, 2, 51, 6, 1406, 1, 5, 55, 1407, 2, 13, 59, 7035, 1, 63, 5, 7036, 2, 67, 13, 35180, 1, 71, 9, 35183, 1, 75, 6, 35185, 2, 79, 6, 70370, 1, 83, 5, 70371, 2, 87, 9, 211113, 2, 9, 91, 633339, 1, 5, 95, 633340, 2, 99, 13, 3166700, 1, 103, 5, 3166701, 1, 2, 107, 3166703, 1, 111, 5, 0, 99, 2, 14, 0, 0]); // eslint-disable-line max-len
+          .toStrictEqual([3166704, 12, 2, 2, 1, 1, 2, 3, 1, 3, 4, 3, 1, 5, 0, 3, 2, 1, 9, 36, 1, 19, 5, 37, 2, 6, 23, 74, 1, 6, 27, 76, 2, 31, 9, 228, 1, 35, 6, 230, 1, 10, 39, 234, 2, 9, 43, 702, 1, 5, 47, 703, 2, 51, 6, 1406, 1, 5, 55, 1407, 2, 13, 59, 7035, 1, 63, 5, 7036, 2, 67, 13, 35180, 1, 71, 9, 35183, 1, 75, 6, 35185, 2, 79, 6, 70370, 1, 83, 5, 70371, 2, 87, 9, 211113, 2, 9, 91, 633339, 1, 5, 95, 633340, 2, 99, 13, 3166700, 1, 103, 5, 3166701, 1, 2, 107, 3166703, 1, 111, 5, 0, 99, 2, 14, 0, 0]);
       });
     });
     test('runProgramAndGetFirstValue(programStateString, 12, 2)', () => {
@@ -85,8 +85,8 @@ describe('day 2', () => {
           .toStrictEqual([80, 18]);
       });
     });
-    test('answerPart2(programStateString, <answer to part 2>)', () => {
-      expect(answerPart2(puzzleInput, 19690720))
+    test('answerDay2Part2(programStateString, <answer to part 2>)', () => {
+      expect(answerDay2Part2(puzzleInput, 19690720))
         .toStrictEqual(8018);
     });
   });

@@ -11,7 +11,16 @@ const opcodes = {
   MULTIPLY_PARAMS: 2,
   SAVE_INPUT: 3,
   OUTPUT: 4,
+  JUMP_IF_TRUE: 5,
+  JUMP_IF_FALSE: 6,
+  LESS_THAN: 7,
+  EQUALS: 8,
   STOP: 99,
+};
+
+const paramModes = {
+  POSITION: 0,
+  IMMEDIATE: 1,
 };
 
 const stringArrayToIntArray = (stateString) => stateString.split(',').map((n) => parseInt(n, 10));
@@ -23,7 +32,11 @@ const parseFirstNumber = (firstNumber) => {
     .join('');
   const opcode = parseInt(opcodeStr, 10);
 
-  const parameterModes = [0, 0, 0];
+  const parameterModes = [
+    paramModes.POSITION,
+    paramModes.POSITION,
+    paramModes.POSITION,
+  ];
   const parsedParameterModes = firstNumberArr
     .slice(0, firstNumberArr.length - 2)
     .map((char) => parseInt(char, 10))
@@ -35,44 +48,95 @@ const parseFirstNumber = (firstNumber) => {
   return { opcode, parameterModes };
 };
 
+const getNumInstructionValues = (initialState, instructionPointer) => {
+  const { opcode } = parseFirstNumber(initialState[instructionPointer]);
+  if ([
+    opcodes.ADD_PARAMS,
+    opcodes.MULTIPLY_PARAMS,
+    opcodes.LESS_THAN,
+    opcodes.EQUALS,
+  ].includes(opcode)) {
+    return 4;
+  }
+
+  if ([
+    opcodes.SAVE_INPUT,
+    opcodes.OUTPUT,
+  ].includes(opcode)) {
+    return 2;
+  }
+
+  if ([
+    opcodes.JUMP_IF_TRUE,
+    opcodes.JUMP_IF_FALSE,
+  ].includes(opcode)) {
+    return 3;
+  }
+
+  if ([
+    opcodes.STOP,
+  ].includes(opcode)) {
+    return 0;
+  }
+  throw new Error();
+};
+
 const runInstruction = (initialState, instructionPointer, input?: number) => {
   const { opcode, parameterModes } = parseFirstNumber(initialState[instructionPointer]);
-  // TODO: rename addressOfParam1 -> param1
   const addressOfParam1 = initialState[instructionPointer + 1];
   const addressOfParam2 = initialState[instructionPointer + 2];
-  const addressOfOutput = initialState[instructionPointer + 3];
+  const param3 = initialState[instructionPointer + 3];
 
-  const [paramMode1, paramMode2] = parameterModes;
+  const [modeOfParam1, modeOfParam2] = parameterModes;
 
   let param1;
-  if (paramMode1 === 1) {
+  if (modeOfParam1 === paramModes.IMMEDIATE) {
     param1 = addressOfParam1;
-  } else if (paramMode1 === 0) {
+  } else if (modeOfParam1 === paramModes.POSITION) {
     param1 = initialState[addressOfParam1];
   }
 
   let param2;
-  if (paramMode2 === 1) {
+  if (modeOfParam2 === paramModes.IMMEDIATE) {
     param2 = addressOfParam2;
-  } else if (paramMode2 === 0) {
+  } else if (modeOfParam2 === paramModes.POSITION) {
     param2 = initialState[addressOfParam2];
   }
 
   let newState = deepClone(initialState);
   let output;
 
+  const numInstructionValues = getNumInstructionValues(initialState, instructionPointer);
+  let newInstructionPointerAddress = instructionPointer + numInstructionValues;
+
   switch (opcode) {
     case opcodes.ADD_PARAMS:
-      newState[addressOfOutput] = param1 + param2;
+      newState[param3] = param1 + param2;
       break;
     case opcodes.MULTIPLY_PARAMS:
-      newState[addressOfOutput] = param1 * param2;
+      newState[param3] = param1 * param2;
       break;
     case opcodes.SAVE_INPUT:
       newState[addressOfParam1] = input;
       break;
     case opcodes.OUTPUT:
       output = param1;
+      break;
+    case opcodes.JUMP_IF_TRUE:
+      if (param1 !== 0) {
+        newInstructionPointerAddress = param2;
+      }
+      break;
+    case opcodes.JUMP_IF_FALSE:
+      if (param1 === 0) {
+        newInstructionPointerAddress = param2;
+      }
+      break;
+    case opcodes.LESS_THAN:
+      newState[param3] = (param1 < param2) ? 1 : 0;
+      break;
+    case opcodes.EQUALS:
+      newState[param3] = (param1 === param2) ? 1 : 0;
       break;
     case opcodes.STOP:
       newState = STOP_STATE;
@@ -83,42 +147,36 @@ const runInstruction = (initialState, instructionPointer, input?: number) => {
   return {
     newState,
     output,
+    newInstructionPointerAddress,
   };
-};
-
-const getNumInstructionValues = (initialState, instructionPointer) => {
-  const { opcode } = parseFirstNumber(initialState[instructionPointer]);
-  if ([1, 2].includes(opcode)) {
-    return 4;
-  }
-  if ([3, 4].includes(opcode)) {
-    return 2;
-  }
-  if ([99].includes(opcode)) {
-    return 0;
-  }
-  throw new Error();
 };
 
 const runProgram = (initialState, input?: number) => {
   const outputs = [];
   let instructionPointer = initialInstructionPointerAddress;
   let currentState = deepClone(initialState);
-  let numInstructionValues = getNumInstructionValues(currentState, instructionPointer);
-  while ((instructionPointer + numInstructionValues) <= initialState.length) {
+  while ((instructionPointer + 2) <= initialState.length) {
     const outcome = (instructionPointer === 0)
       ? runInstruction(currentState, instructionPointer, input)
       : runInstruction(currentState, instructionPointer);
-    const { newState, output } = outcome;
-    outputs.push(output);
+
+    const {
+      newState,
+      output,
+      newInstructionPointerAddress,
+    } = outcome;
+
     if (newState === STOP_STATE) {
       return {
         newState: currentState,
         outputs,
       };
     }
-    numInstructionValues = getNumInstructionValues(currentState, instructionPointer);
-    instructionPointer += numInstructionValues;
+
+    outputs.push(output);
+
+    instructionPointer = newInstructionPointerAddress;
+
     currentState = deepClone(newState);
   }
   return {
@@ -170,7 +228,7 @@ const runProgramAndGetFirstValue = (programStateString, nounParam, verbParam) =>
   return finalState[0];
 };
 
-const answerPart2 = (programStateString, targetOutput) => {
+const answerDay2Part2 = (programStateString, targetOutput) => {
   const [nounParam, verbParam] = findParamsThatProduceOutput(programStateString, targetOutput);
   return (100 * nounParam) + verbParam;
 };
@@ -185,5 +243,5 @@ export {
   runProgramFromStateStringWithParams,
   findParamsThatProduceOutput,
   runProgramAndGetFirstValue,
-  answerPart2,
+  answerDay2Part2,
 };
