@@ -1,7 +1,6 @@
 import { deepClone } from '../../utils';
 
 const initialInstructionPointerAddress = 0;
-const numInstructionValues = 4;
 const minParamValue = 0;
 const maxParamValue = 99;
 
@@ -10,21 +9,57 @@ const STOP_STATE = -1;
 const opcodes = {
   ADD_PARAMS: 1,
   MULTIPLY_PARAMS: 2,
+  SAVE_INPUT: 3,
+  OUTPUT: 4,
   STOP: 99,
 };
 
 const stringArrayToIntArray = (stateString) => stateString.split(',').map((n) => parseInt(n, 10));
 
-const runInstruction = (initialState, instructionPointer) => {
-  const opcode = initialState[instructionPointer];
+const parseFirstNumber = (firstNumber) => {
+  const firstNumberArr = firstNumber.toString().split('');
+  const opcodeStr = firstNumberArr
+    .slice(firstNumberArr.length - 2)
+    .join('');
+  const opcode = parseInt(opcodeStr, 10);
+
+  const parameterModes = [0, 0, 0];
+  const parsedParameterModes = firstNumberArr
+    .slice(0, firstNumberArr.length - 2)
+    .map((char) => parseInt(char, 10))
+    .reverse();
+  for (let i = 0; i < parsedParameterModes.length; i++) {
+    parameterModes[i] = parsedParameterModes[i];
+  }
+
+  return { opcode, parameterModes };
+};
+
+const runInstruction = (initialState, instructionPointer, input?: number) => {
+  const { opcode, parameterModes } = parseFirstNumber(initialState[instructionPointer]);
+  // TODO: rename addressOfParam1 -> param1
   const addressOfParam1 = initialState[instructionPointer + 1];
   const addressOfParam2 = initialState[instructionPointer + 2];
   const addressOfOutput = initialState[instructionPointer + 3];
 
-  const param1 = initialState[addressOfParam1];
-  const param2 = initialState[addressOfParam2];
+  const [paramMode1, paramMode2] = parameterModes;
 
-  const newState = deepClone(initialState);
+  let param1;
+  if (paramMode1 === 1) {
+    param1 = addressOfParam1;
+  } else if (paramMode1 === 0) {
+    param1 = initialState[addressOfParam1];
+  }
+
+  let param2;
+  if (paramMode2 === 1) {
+    param2 = addressOfParam2;
+  } else if (paramMode2 === 0) {
+    param2 = initialState[addressOfParam2];
+  }
+
+  let newState = deepClone(initialState);
+  let output;
 
   switch (opcode) {
     case opcodes.ADD_PARAMS:
@@ -33,31 +68,73 @@ const runInstruction = (initialState, instructionPointer) => {
     case opcodes.MULTIPLY_PARAMS:
       newState[addressOfOutput] = param1 * param2;
       break;
+    case opcodes.SAVE_INPUT:
+      newState[addressOfParam1] = input;
+      break;
+    case opcodes.OUTPUT:
+      output = param1;
+      break;
     case opcodes.STOP:
-      return STOP_STATE;
+      newState = STOP_STATE;
+      break;
     default:
       throw new Error();
   }
-  return newState;
+  return {
+    newState,
+    output,
+  };
 };
 
-const runProgram = (initialState) => {
+const getNumInstructionValues = (initialState, instructionPointer) => {
+  const { opcode } = parseFirstNumber(initialState[instructionPointer]);
+  if ([1, 2].includes(opcode)) {
+    return 4;
+  }
+  if ([3, 4].includes(opcode)) {
+    return 2;
+  }
+  if ([99].includes(opcode)) {
+    return 0;
+  }
+  throw new Error();
+};
+
+const runProgram = (initialState, input?: number) => {
+  const outputs = [];
   let instructionPointer = initialInstructionPointerAddress;
   let currentState = deepClone(initialState);
+  let numInstructionValues = getNumInstructionValues(currentState, instructionPointer);
   while ((instructionPointer + numInstructionValues) <= initialState.length) {
-    const newState = runInstruction(currentState, instructionPointer);
+    const outcome = (instructionPointer === 0)
+      ? runInstruction(currentState, instructionPointer, input)
+      : runInstruction(currentState, instructionPointer);
+    const { newState, output } = outcome;
+    outputs.push(output);
     if (newState === STOP_STATE) {
-      return currentState;
+      return {
+        newState: currentState,
+        outputs,
+      };
     }
-    currentState = deepClone(newState);
+    numInstructionValues = getNumInstructionValues(currentState, instructionPointer);
     instructionPointer += numInstructionValues;
+    currentState = deepClone(newState);
   }
-  return currentState;
+  return {
+    newState: currentState,
+    outputs,
+  };
 };
 
 const runProgramFromStateString = (stateString) => {
   const initialState = stringArrayToIntArray(stateString);
   return runProgram(initialState);
+};
+
+const runProgramFromStateStringWithInput = (stateString: string, input: number) => {
+  const initialState = stringArrayToIntArray(stateString);
+  return runProgram(initialState, input);
 };
 
 const runProgramFromStateStringWithParams = (stateString, nounParam, verbParam) => {
@@ -70,7 +147,7 @@ const runProgramFromStateStringWithParams = (stateString, nounParam, verbParam) 
 const findParamsThatProduceOutput = (programStateString, targetOutput) => {
   for (let nounParam = minParamValue; nounParam < maxParamValue; nounParam++) {
     for (let verbParam = minParamValue; verbParam < maxParamValue; verbParam++) {
-      const finalState = runProgramFromStateStringWithParams(
+      const { newState: finalState } = runProgramFromStateStringWithParams(
         programStateString,
         nounParam,
         verbParam,
@@ -85,7 +162,11 @@ const findParamsThatProduceOutput = (programStateString, targetOutput) => {
 };
 
 const runProgramAndGetFirstValue = (programStateString, nounParam, verbParam) => {
-  const finalState = runProgramFromStateStringWithParams(programStateString, nounParam, verbParam);
+  const { newState: finalState } = runProgramFromStateStringWithParams(
+    programStateString,
+    nounParam,
+    verbParam,
+  );
   return finalState[0];
 };
 
@@ -95,6 +176,10 @@ const answerPart2 = (programStateString, targetOutput) => {
 };
 
 export {
+  getNumInstructionValues,
+  parseFirstNumber,
+  runInstruction,
+  runProgramFromStateStringWithInput,
   runProgram,
   runProgramFromStateString,
   runProgramFromStateStringWithParams,
