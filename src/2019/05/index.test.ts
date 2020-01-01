@@ -4,7 +4,7 @@ import {
   runInstruction,
   runProgram,
   runProgramFromStateStringWithInputs,
-} from '../02';
+} from '.';
 
 const exampleProgram1 = [1002, 4, 3, 4, 33];
 const exampleProgram2 = [1101, 100, -1, 4, 0];
