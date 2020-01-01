@@ -1,10 +1,12 @@
 import { deepClone } from '../../utils';
 
-const initialInstructionPointerAddress = 0;
 const minParamValue = 0;
 const maxParamValue = 99;
 
-const STOP_STATE = -1;
+const states = {
+  STOP: -1,
+  PAUSE: -2,
+};
 
 const opcodes = {
   ADD_PARAMS: 1,
@@ -118,6 +120,10 @@ const runInstruction = (initialState, instructionPointer, inputs?: number[]) => 
       newState[param3] = param1 * param2;
       break;
     case opcodes.SAVE_INPUT: {
+      if (Array.isArray(remainingInputs) && !remainingInputs.length) {
+        newState = states.PAUSE;
+        break;
+      }
       const input = remainingInputs.shift();
       newState[addressOfParam1] = input;
       break;
@@ -142,7 +148,7 @@ const runInstruction = (initialState, instructionPointer, inputs?: number[]) => 
       newState[param3] = (param1 === param2) ? 1 : 0;
       break;
     case opcodes.STOP:
-      newState = STOP_STATE;
+      newState = states.STOP;
       break;
     default:
       throw new Error();
@@ -155,47 +161,62 @@ const runInstruction = (initialState, instructionPointer, inputs?: number[]) => 
   };
 };
 
+const thereAreMoreInstructions = (currentState) =>
+  (currentState.instructionPointer + 2) <= currentState.state.length;
+
 const runProgram = (
   initialState,
-  inputs?: number[],
+  initialInputs: number[] = [],
+  initialInstructionPointerAddress = 0,
 ) => {
-  const outputs = [];
-  let instructionPointer = initialInstructionPointerAddress;
-  let currentState = deepClone(initialState);
-  let currentInputs = deepClone(inputs);
-  while ((instructionPointer + 2) <= initialState.length) {
-    const outcome = runInstruction(
-      currentState,
+  let currentState = {
+    state: deepClone(initialState),
+    outputs: [],
+    instructionPointer: initialInstructionPointerAddress,
+    inputs: deepClone(initialInputs),
+  };
+  while (thereAreMoreInstructions(currentState)) {
+    const {
+      state,
+      outputs,
       instructionPointer,
-      currentInputs,
-    );
+      inputs,
+    } = currentState;
 
     const {
       newState,
       output,
       newInstructionPointerAddress,
       remainingInputs,
-    } = outcome;
+    } = runInstruction(
+      state,
+      instructionPointer,
+      inputs,
+    );
 
-    if (newState === STOP_STATE) {
+    if (newState === states.PAUSE) {
       return {
-        newState: currentState,
+        newState: state,
         outputs,
+        instructionPointer,
       };
     }
 
-    outputs.push(output);
-
-    instructionPointer = newInstructionPointerAddress;
-
-    currentState = deepClone(newState);
-    if (inputs) {
-      currentInputs = deepClone(remainingInputs);
+    if (newState === states.STOP) {
+      break;
     }
+
+    currentState = {
+      state: deepClone(newState),
+      outputs: outputs.concat([output]),
+      instructionPointer: newInstructionPointerAddress,
+      inputs: deepClone(remainingInputs),
+    };
   }
+
   return {
-    newState: currentState,
-    outputs,
+    newState: currentState.state,
+    outputs: currentState.outputs,
   };
 };
 
@@ -247,53 +268,136 @@ const answerDay2Part2 = (programStateString, targetOutput) => {
   return (100 * nounParam) + verbParam;
 };
 
-const runAmplifier = (program, phaseSetting, inputSignal) => {
+const runAmp = (program, phaseSetting, inputSignal) => {
   const { outputs } = runProgram(program, [phaseSetting, inputSignal]);
   const outputSignal = outputs[outputs.length - 1];
   return outputSignal;
 };
 
-const runAmplifiers = (program, phaseSettingSequence) => {
-  let nextOutputSignal = 0;
-  for (let i = 0; i < phaseSettingSequence.length; i++) {
-    const phaseSetting = phaseSettingSequence[i];
-    nextOutputSignal = runAmplifier(
+const runAmps = (program, phaseSettingSequence) => {
+  let currentOutputSignal = 0;
+  phaseSettingSequence.forEach((phaseSetting) => {
+    currentOutputSignal = runAmp(
       program,
       phaseSetting,
-      nextOutputSignal,
+      currentOutputSignal,
     );
+  });
+  return currentOutputSignal;
+};
+
+const findLast = (arr, condition) => arr
+  .slice()
+  .reverse()
+  .find((element) => condition(element));
+
+const runAmpInFeedbackMode = (
+  program,
+  phaseSetting,
+  inputSignal,
+  initialInstructionPointerAddress = 0,
+) => {
+  const inputs = (initialInstructionPointerAddress === 0)
+    ? [phaseSetting, inputSignal]
+    : [inputSignal];
+  const {
+    newState,
+    outputs,
+    instructionPointer,
+  } = runProgram(
+    program,
+    inputs,
+    initialInstructionPointerAddress,
+  );
+  const outputSignal = findLast(outputs, (output) => output !== undefined);
+  return {
+    newState,
+    outputSignal,
+    instructionPointer,
+  };
+};
+
+const runAmpsInFeedbackMode = (program, phaseSettingSequence) => {
+  let currentOutputSignal = 0;
+  const numPhaseSettings = phaseSettingSequence.length;
+  const amplifierStates = Array(numPhaseSettings).fill({
+    state: deepClone(program),
+    instructionPointer: 0,
+  });
+  for (let i = 0; i < numPhaseSettings; i++) {
+    const phaseSetting = phaseSettingSequence[i];
+    const {
+      newState,
+      outputSignal,
+      instructionPointer,
+    } = runAmpInFeedbackMode(
+      amplifierStates[i].state,
+      phaseSetting,
+      currentOutputSignal,
+      amplifierStates[i].instructionPointer,
+    );
+
+    currentOutputSignal = outputSignal;
+
+    amplifierStates[i] = {
+      state: newState,
+      instructionPointer,
+    };
+
+    const onLastAmp = i === (numPhaseSettings - 1);
+    const ampAwaitingInput = (typeof instructionPointer) === 'number';
+    if (onLastAmp && ampAwaitingInput) {
+      // loop through the amplifiers again
+      i = -1;
+    }
   }
-  return nextOutputSignal;
+  return currentOutputSignal;
 };
 
 const duplicatesInArray = (arr) =>
   [...(new Set(arr))].length !== arr.length;
 
-const findMaxThrusterSignal = (program) => {
-  const minPhaseSetting = 0;
-  const maxPhaseSetting = 4;
-  let maxThrusterSignal = 0;
-  for (let i = minPhaseSetting; i <= maxPhaseSetting; i++) {
-    for (let j = minPhaseSetting; j <= maxPhaseSetting; j++) {
-      for (let k = minPhaseSetting; k <= maxPhaseSetting; k++) {
-        for (let l = minPhaseSetting; l <= maxPhaseSetting; l++) {
-          for (let m = minPhaseSetting; m <= maxPhaseSetting; m++) {
-            const phaseSettingSequence = [i, j, k, l, m];
-            if (!duplicatesInArray(phaseSettingSequence)) {
-              const thrusterSignal = runAmplifiers(
-                program,
-                phaseSettingSequence,
-              );
-              if (thrusterSignal > maxThrusterSignal) {
-                maxThrusterSignal = thrusterSignal;
-              }
+const getPermutations = (min, max) => {
+  const permutations = [];
+  for (let i = min; i <= max; i++) {
+    for (let j = min; j <= max; j++) {
+      for (let k = min; k <= max; k++) {
+        for (let l = min; l <= max; l++) {
+          for (let m = min; m <= max; m++) {
+            const permutation = [i, j, k, l, m];
+            if (!duplicatesInArray(permutation)) {
+              permutations.push(permutation);
             }
           }
         }
       }
     }
   }
-  return maxThrusterSignal;
+  return permutations;
+};
+
+const findMaxThrusterSignal = (program) => {
+  const possiblePhaseSettingSequences = getPermutations(0, 4);
+  const thrusterSignals = possiblePhaseSettingSequences.map((phaseSettingSequence) =>
+    runAmps(program, phaseSettingSequence));
+  return Math.max(...thrusterSignals);
+};
+
+const findMaxThrusterSignalInFeedbackMode = (program) => {
+  const possiblePhaseSettingSequences = getPermutations(5, 9);
+  let maxThrusterSignal = 0;
+  let phaseSettingSequenceGeneratingMaxSignal = [];
+  possiblePhaseSettingSequences.forEach((phaseSettingSequence) => {
+    const thrusterSignal = runAmpsInFeedbackMode(program, phaseSettingSequence);
+    if (thrusterSignal > maxThrusterSignal) {
+      maxThrusterSignal = thrusterSignal;
+      phaseSettingSequenceGeneratingMaxSignal = phaseSettingSequence;
+    }
+  });
+  return {
+    maxThrusterSignal,
+    phaseSettingSequenceGeneratingMaxSignal,
+  };
 };
 
 export {
@@ -307,7 +411,10 @@ export {
   findParamsThatProduceOutput,
   runProgramAndGetFirstValue,
   answerDay2Part2,
-  runAmplifier,
-  runAmplifiers,
+  runAmp,
+  runAmps,
+  runAmpInFeedbackMode,
+  runAmpsInFeedbackMode,
   findMaxThrusterSignal,
+  findMaxThrusterSignalInFeedbackMode,
 };
