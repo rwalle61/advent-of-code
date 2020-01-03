@@ -74,7 +74,7 @@ describe('day 2', () => {
         .toStrictEqual(3166704);
     });
   });
-  describe('part 2', () => {
+  describe.skip('part 2', () => {
     describe('findParamsThatProduceOutput(programStateString, <targetOutput>)', () => {
       test('<answer to part 1>', () => {
         expect(findParamsThatProduceOutput(puzzleInput, 3166704))

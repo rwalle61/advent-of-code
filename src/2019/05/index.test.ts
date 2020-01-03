@@ -1,5 +1,4 @@
 import {
-  getNumInstructionValues,
   parseFirstNumber,
   runInstruction,
   runProgram,
@@ -13,47 +12,31 @@ const puzzleInput = '3,225,1,225,6,6,1100,1,238,225,104,0,101,14,135,224,101,-69
 
 describe('day 5', () => {
   describe('part 1', () => {
-    test('getNumInstructionValues(initialState, instructionPointer)', () => {
-      expect(getNumInstructionValues([99], 0))
-        .toStrictEqual(0);
-      expect(getNumInstructionValues([1, 0, 0, 0, 99], 0))
-        .toStrictEqual(4);
-      expect(getNumInstructionValues([2, 0, 0, 0, 99], 0))
-        .toStrictEqual(4);
-      expect(getNumInstructionValues([3, 0, 99], 0))
-        .toStrictEqual(2);
-      expect(getNumInstructionValues([4, 0, 99], 0))
-        .toStrictEqual(2);
-      expect(getNumInstructionValues([4, 0, 4, 0, 99], 0))
-        .toStrictEqual(2);
-      expect(getNumInstructionValues([4, 0, 4, 0, 99], 2))
-        .toStrictEqual(2);
-    });
     test('parseFirstNumber(number)', () => {
       expect(parseFirstNumber(3))
         .toStrictEqual({
           opcode: 3,
-          parameterModes: [0, 0, 0],
+          parsedParamModes: [],
         });
       expect(parseFirstNumber(99))
         .toStrictEqual({
           opcode: 99,
-          parameterModes: [0, 0, 0],
+          parsedParamModes: [],
         });
       expect(parseFirstNumber(103))
         .toStrictEqual({
           opcode: 3,
-          parameterModes: [1, 0, 0],
+          parsedParamModes: [1],
         });
       expect(parseFirstNumber(1003))
         .toStrictEqual({
           opcode: 3,
-          parameterModes: [0, 1, 0],
+          parsedParamModes: [0, 1],
         });
       expect(parseFirstNumber(10003))
         .toStrictEqual({
           opcode: 3,
-          parameterModes: [0, 0, 1],
+          parsedParamModes: [0, 0, 1],
         });
     });
     describe('runInstruction(<initialState>, <instructionPointer>, <inputValue>)', () => {
