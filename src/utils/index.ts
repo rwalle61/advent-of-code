@@ -4,7 +4,13 @@ const deepClone = (obj) => (obj
   ? JSON.parse(JSON.stringify(obj))
   : obj);
 
+const findLast = (arr, condition) => arr
+  .slice()
+  .reverse()
+  .find((element) => condition(element));
+
 export {
   sum,
   deepClone,
+  findLast,
 };

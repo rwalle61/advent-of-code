@@ -1,14 +1,10 @@
 import {
   deepClone,
+  findLast,
 } from '../../utils';
 import {
   runProgram,
 } from '../../utils/intCodeComputer';
-
-const findLast = (arr, condition) => arr
-  .slice()
-  .reverse()
-  .find((element) => condition(element));
 
 const runAmp = (program, phaseSetting, inputSignal) => {
   const { outputs } = runProgram(program, [phaseSetting, inputSignal]);
