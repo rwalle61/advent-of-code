@@ -29,6 +29,7 @@ extends:
 rules:
   no-plusplus: off
   no-console: off
+  no-restricted-syntax: off
   require-await: error
   prefer-arrow-callback: error
   prefer-arrow/prefer-arrow-functions: error
