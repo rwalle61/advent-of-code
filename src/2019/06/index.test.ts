@@ -1,10 +1,6 @@
 import { resolve } from 'path';
 
-import {
-  parseOrbitMap,
-  countOrbits,
-  countOrbitalTransfers,
-} from '.';
+import { parseOrbitMap, countOrbits, countOrbitalTransfers } from '.';
 
 const pathToDay6Dir = resolve('src', '2019', '06');
 
@@ -13,21 +9,19 @@ describe('day 6', () => {
     describe('parseOrbitMap(<filePath>)', () => {
       test('part1ExampleInput', () => {
         const filepath = resolve(pathToDay6Dir, 'part1ExampleInput.txt');
-        expect(parseOrbitMap(filepath)).toStrictEqual(
-          [
-            ['COM', 'B'],
-            ['B', 'C'],
-            ['C', 'D'],
-            ['D', 'E'],
-            ['E', 'F'],
-            ['B', 'G'],
-            ['G', 'H'],
-            ['D', 'I'],
-            ['E', 'J'],
-            ['J', 'K'],
-            ['K', 'L'],
-          ],
-        );
+        expect(parseOrbitMap(filepath)).toStrictEqual([
+          ['COM', 'B'],
+          ['B', 'C'],
+          ['C', 'D'],
+          ['D', 'E'],
+          ['E', 'F'],
+          ['B', 'G'],
+          ['G', 'H'],
+          ['D', 'I'],
+          ['E', 'J'],
+          ['J', 'K'],
+          ['K', 'L'],
+        ]);
       });
     });
   });

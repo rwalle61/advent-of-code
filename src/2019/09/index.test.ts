@@ -1,6 +1,5 @@
 import { runInstruction, runProgram, runProgramAndGetLastOutput } from '.';
 
-
 // prettier-ignore
 const puzzleInput = [
   1102, 34463338, 34463338, 63,

@@ -2,7 +2,7 @@ import { sum } from '../../utils';
 
 const calculateFuelRequiredForMass = (mass) => {
   const fuelRequired = Math.floor(mass / 3) - 2;
-  return (fuelRequired > 0) ? fuelRequired : 0;
+  return fuelRequired > 0 ? fuelRequired : 0;
 };
 
 const calculateFuelRequiredForMasses = (inputString) => {

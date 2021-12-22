@@ -14,7 +14,8 @@ const countOrbitsRecursive = (orbitMap, nextObj, distanceFromCentre) => {
 
   const nextPairs = orbitMap.filter((pair) => pair[0] === nextObj);
   const arrayOfOrbitsFromAfterHere = nextPairs.map((pair) =>
-    countOrbitsRecursive(orbitMap, pair[1], distanceFromCentre + 1));
+    countOrbitsRecursive(orbitMap, pair[1], distanceFromCentre + 1)
+  );
   const numOrbitsFromAfterHere = sumArray(arrayOfOrbitsFromAfterHere);
 
   return numOrbitsFromHere + numOrbitsFromAfterHere;
@@ -39,16 +40,16 @@ const buildTreeBackwards = (orbitMap, currentOrbitingObj) => {
 const countOrbitalTransfers = (orbitMap) => {
   const orbitTreeToYou = buildTreeBackwards(orbitMap, 'YOU');
   const orbitTreeToSanta = buildTreeBackwards(orbitMap, 'SAN');
-  const nearestJunction = orbitTreeToYou.find((obj) =>
-    !['YOU', 'SAN'].includes(obj) && orbitTreeToSanta.includes(obj));
-  const transfersFromYouToNearestJunction = orbitTreeToYou.indexOf(nearestJunction) - 1;
-  const transfersFromNearestJunctionToSanta = orbitTreeToSanta.indexOf(nearestJunction) - 1;
-  const numTransfers = transfersFromYouToNearestJunction + transfersFromNearestJunctionToSanta;
+  const nearestJunction = orbitTreeToYou.find(
+    (obj) => !['YOU', 'SAN'].includes(obj) && orbitTreeToSanta.includes(obj)
+  );
+  const transfersFromYouToNearestJunction =
+    orbitTreeToYou.indexOf(nearestJunction) - 1;
+  const transfersFromNearestJunctionToSanta =
+    orbitTreeToSanta.indexOf(nearestJunction) - 1;
+  const numTransfers =
+    transfersFromYouToNearestJunction + transfersFromNearestJunctionToSanta;
   return numTransfers;
 };
 
-export {
-  parseOrbitMap,
-  countOrbits,
-  countOrbitalTransfers,
-};
+export { parseOrbitMap, countOrbits, countOrbitalTransfers };

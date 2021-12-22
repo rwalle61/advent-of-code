@@ -1,6 +1,4 @@
-import {
-
-} from '.';
+import {} from '.';
 
 describe('day X', () => {
   describe('part 1', () => {
@@ -11,6 +9,5 @@ describe('day X', () => {
       });
     });
   });
-  describe('part 2', () => {
-  });
+  describe('part 2', () => {});
 });

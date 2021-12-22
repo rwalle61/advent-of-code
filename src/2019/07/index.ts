@@ -1,10 +1,5 @@
-import {
-  deepClone,
-  findLast,
-} from '../../utils';
-import {
-  runProgram,
-} from '../../utils/intCodeComputer';
+import { deepClone, findLast } from '../../utils';
+import { runProgram } from '../../utils/intCodeComputer';
 
 const runAmp = (program, phaseSetting, inputSignal) => {
   const { outputs } = runProgram(program, [phaseSetting, inputSignal]);
@@ -15,11 +10,7 @@ const runAmp = (program, phaseSetting, inputSignal) => {
 const runAmps = (program, phaseSettingSequence) => {
   let currentOutputSignal = 0;
   phaseSettingSequence.forEach((phaseSetting) => {
-    currentOutputSignal = runAmp(
-      program,
-      phaseSetting,
-      currentOutputSignal,
-    );
+    currentOutputSignal = runAmp(program, phaseSetting, currentOutputSignal);
   });
   return currentOutputSignal;
 };
@@ -28,19 +19,16 @@ const runAmpInFeedbackMode = (
   program,
   phaseSetting,
   inputSignal,
-  initialInstructionPointerAddress = 0,
+  initialInstructionPointerAddress = 0
 ) => {
-  const inputs = (initialInstructionPointerAddress === 0)
-    ? [phaseSetting, inputSignal]
-    : [inputSignal];
-  const {
-    newState,
-    outputs,
-    instructionPointer,
-  } = runProgram(
+  const inputs =
+    initialInstructionPointerAddress === 0
+      ? [phaseSetting, inputSignal]
+      : [inputSignal];
+  const { newState, outputs, instructionPointer } = runProgram(
     program,
     inputs,
-    initialInstructionPointerAddress,
+    initialInstructionPointerAddress
   );
   const outputSignal = findLast(outputs, (output) => output !== undefined);
   return {
@@ -59,15 +47,11 @@ const runAmpsInFeedbackMode = (program, phaseSettingSequence) => {
   });
   for (let i = 0; i < numPhaseSettings; i++) {
     const phaseSetting = phaseSettingSequence[i];
-    const {
-      newState,
-      outputSignal,
-      instructionPointer,
-    } = runAmpInFeedbackMode(
+    const { newState, outputSignal, instructionPointer } = runAmpInFeedbackMode(
       amplifierStates[i].state,
       phaseSetting,
       currentOutputSignal,
-      amplifierStates[i].instructionPointer,
+      amplifierStates[i].instructionPointer
     );
 
     currentOutputSignal = outputSignal;
@@ -77,8 +61,8 @@ const runAmpsInFeedbackMode = (program, phaseSettingSequence) => {
       instructionPointer,
     };
 
-    const onLastAmp = i === (numPhaseSettings - 1);
-    const ampAwaitingInput = (typeof instructionPointer) === 'number';
+    const onLastAmp = i === numPhaseSettings - 1;
+    const ampAwaitingInput = typeof instructionPointer === 'number';
     if (onLastAmp && ampAwaitingInput) {
       // loop through the amplifiers again
       i = -1;
@@ -87,8 +71,7 @@ const runAmpsInFeedbackMode = (program, phaseSettingSequence) => {
   return currentOutputSignal;
 };
 
-const duplicatesInArray = (arr) =>
-  [...(new Set(arr))].length !== arr.length;
+const duplicatesInArray = (arr) => [...new Set(arr)].length !== arr.length;
 
 const getPermutations = (min, max) => {
   const permutations = [];
@@ -111,8 +94,9 @@ const getPermutations = (min, max) => {
 
 const findMaxThrusterSignal = (program) => {
   const possiblePhaseSettingSequences = getPermutations(0, 4);
-  const thrusterSignals = possiblePhaseSettingSequences.map((phaseSettingSequence) =>
-    runAmps(program, phaseSettingSequence));
+  const thrusterSignals = possiblePhaseSettingSequences.map(
+    (phaseSettingSequence) => runAmps(program, phaseSettingSequence)
+  );
   return Math.max(...thrusterSignals);
 };
 

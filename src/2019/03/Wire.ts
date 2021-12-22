@@ -1,6 +1,7 @@
 import Point from './Point';
 
-const intersectsWithWire = (point: Point, wire) => wire.points.some((point2) => point.isAt(point2));
+const intersectsWithWire = (point: Point, wire) =>
+  wire.points.some((point2) => point.isAt(point2));
 
 const parseWirePath = (wirePathString) => wirePathString.split(',');
 
