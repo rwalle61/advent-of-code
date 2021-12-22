@@ -43,3 +43,4 @@ rules:
   jest/no-disabled-tests: off
   jest/valid-title: off
   jest/no-commented-out-tests: off
+  jest/expect-expect: off
