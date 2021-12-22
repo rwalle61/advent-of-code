@@ -60,12 +60,12 @@ describe('day 7', () => {
       test('example 1', () => {
         const exampleProgram = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0];
         expect(runAmp(exampleProgram, 4, 0))
-          .toEqual(4);
+          .toBe(4);
       });
       test('puzzle input', () => {
         const exampleProgram = puzzleInput;
         expect(runAmp(exampleProgram, 4, 0))
-          .toEqual(65);
+          .toBe(65);
       });
     });
     describe('runAmps(<program>, <phaseSettingSequence>)', () => {
@@ -73,47 +73,47 @@ describe('day 7', () => {
         const exampleProgram = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0];
         const phaseSettingSequence = [4, 3, 2, 1, 0];
         expect(runAmps(exampleProgram, phaseSettingSequence))
-          .toEqual(43210);
+          .toBe(43210);
       });
       test('example 2', () => {
         const exampleProgram = [3, 23, 3, 24, 1002, 24, 10, 24, 1002, 23, -1, 23, 101, 5, 23, 23, 1, 24, 23, 23, 4, 23, 99, 0, 0];
         const phaseSettingSequence = [0, 1, 2, 3, 4];
         expect(runAmps(exampleProgram, phaseSettingSequence))
-          .toEqual(54321);
+          .toBe(54321);
       });
       test('example 3', () => {
         const exampleProgram = [3, 31, 3, 32, 1002, 32, 10, 32, 1001, 31, -2, 31, 1007, 31, 0, 33, 1002, 33, 7, 33, 1, 33, 31, 31, 1, 32, 31, 31, 4, 31, 99, 0, 0, 0];
         const phaseSettingSequence = [1, 0, 4, 3, 2];
         expect(runAmps(exampleProgram, phaseSettingSequence))
-          .toEqual(65210);
+          .toBe(65210);
       });
       test('puzzle input', () => {
         const exampleProgram = puzzleInput;
         const phaseSettingSequence = [1, 0, 4, 3, 2];
         expect(runAmps(exampleProgram, phaseSettingSequence))
-          .toEqual(38480);
+          .toBe(38480);
       });
     });
     describe('findMaxThrusterSignal(<program>)', () => {
       test('example 1', () => {
         const exampleProgram = [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0];
         expect(findMaxThrusterSignal(exampleProgram))
-          .toEqual(43210);
+          .toBe(43210);
       });
       test('example 2', () => {
         const exampleProgram = [3, 23, 3, 24, 1002, 24, 10, 24, 1002, 23, -1, 23, 101, 5, 23, 23, 1, 24, 23, 23, 4, 23, 99, 0, 0];
         expect(findMaxThrusterSignal(exampleProgram))
-          .toEqual(54321);
+          .toBe(54321);
       });
       test('example 3', () => {
         const exampleProgram = [3, 31, 3, 32, 1002, 32, 10, 32, 1001, 31, -2, 31, 1007, 31, 0, 33, 1002, 33, 7, 33, 1, 33, 31, 31, 1, 32, 31, 31, 4, 31, 99, 0, 0, 0];
         expect(findMaxThrusterSignal(exampleProgram))
-          .toEqual(65210);
+          .toBe(65210);
       });
       test('answer part 1', () => {
         const exampleProgram = puzzleInput;
         expect(findMaxThrusterSignal(exampleProgram))
-          .toEqual(46014);
+          .toBe(46014);
       });
     });
   });
@@ -185,7 +185,7 @@ describe('day 7', () => {
         ];
         const phaseSettingSequence = [9, 8, 7, 6, 5];
         expect(runAmpsInFeedbackMode(exampleProgram, phaseSettingSequence))
-          .toEqual(139629729);
+          .toBe(139629729);
       });
       test('part 2 example 2', () => {
         const exampleProgram = [
@@ -209,7 +209,7 @@ describe('day 7', () => {
         ];
         const phaseSettingSequence = [9, 7, 8, 5, 6];
         expect(runAmpsInFeedbackMode(exampleProgram, phaseSettingSequence))
-          .toEqual(18216);
+          .toBe(18216);
       });
     });
     describe('findMaxThrusterSignalInFeedbackMode(<program>)', () => {

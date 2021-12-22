@@ -35,21 +35,21 @@ describe('day 6', () => {
     describe('countOrbits(<orbitMap>)', () => {
       test('simplest map: 1 orbit', () => {
         const orbitMap = [['COM', 'B']];
-        expect(countOrbits(orbitMap)).toEqual(1);
+        expect(countOrbits(orbitMap)).toBe(1);
       });
       test('indirect orbit', () => {
         const orbitMap = [
           ['COM', 'B'],
           ['B', 'C'],
         ];
-        expect(countOrbits(orbitMap)).toEqual(3);
+        expect(countOrbits(orbitMap)).toBe(3);
       });
       test('fork', () => {
         const orbitMap = [
           ['COM', 'B'],
           ['COM', 'C'],
         ];
-        expect(countOrbits(orbitMap)).toEqual(2);
+        expect(countOrbits(orbitMap)).toBe(2);
       });
       test('indirect orbit with fork', () => {
         const orbitMap = [
@@ -57,24 +57,24 @@ describe('day 6', () => {
           ['COM', 'C'],
           ['C', 'D'],
         ];
-        expect(countOrbits(orbitMap)).toEqual(4);
+        expect(countOrbits(orbitMap)).toBe(4);
       });
       test('orbitMap where COM orbit is not listed first', () => {
         const orbitMap = [
           ['B', 'C'],
           ['COM', 'B'],
         ];
-        expect(countOrbits(orbitMap)).toEqual(3);
+        expect(countOrbits(orbitMap)).toBe(3);
       });
       test('part1ExampleInput', () => {
         const filepath = resolve(pathToDay6Dir, 'part1ExampleInput.txt');
         const orbitMap = parseOrbitMap(filepath);
-        expect(countOrbits(orbitMap)).toEqual(42);
+        expect(countOrbits(orbitMap)).toBe(42);
       });
       test('answer part 1', () => {
         const filepath = resolve(pathToDay6Dir, 'puzzleInput.txt');
         const orbitMap = parseOrbitMap(filepath);
-        expect(countOrbits(orbitMap)).toEqual(200001);
+        expect(countOrbits(orbitMap)).toBe(200001);
       });
     });
   });
@@ -85,7 +85,7 @@ describe('day 6', () => {
           ['COM', 'YOU'],
           ['YOU', 'SAN'],
         ];
-        expect(countOrbitalTransfers(orbitMap)).toEqual(1);
+        expect(countOrbitalTransfers(orbitMap)).toBe(1);
       });
       test('2 orbital transfers after you', () => {
         const orbitMap = [
@@ -93,14 +93,14 @@ describe('day 6', () => {
           ['YOU', 'B'],
           ['B', 'SAN'],
         ];
-        expect(countOrbitalTransfers(orbitMap)).toEqual(2);
+        expect(countOrbitalTransfers(orbitMap)).toBe(2);
       });
       test('1 orbital transfer before you', () => {
         const orbitMap = [
           ['COM', 'SAN'],
           ['SAN', 'YOU'],
         ];
-        expect(countOrbitalTransfers(orbitMap)).toEqual(1);
+        expect(countOrbitalTransfers(orbitMap)).toBe(1);
       });
       test('orbital transfers to another fork', () => {
         const orbitMap = [
@@ -109,17 +109,17 @@ describe('day 6', () => {
           ['COM', 'C'],
           ['C', 'SAN'],
         ];
-        expect(countOrbitalTransfers(orbitMap)).toEqual(2);
+        expect(countOrbitalTransfers(orbitMap)).toBe(2);
       });
       test('part2ExampleInput', () => {
         const filepath = resolve(pathToDay6Dir, 'part2ExampleInput.txt');
         const orbitMap = parseOrbitMap(filepath);
-        expect(countOrbitalTransfers(orbitMap)).toEqual(4);
+        expect(countOrbitalTransfers(orbitMap)).toBe(4);
       });
       test('answer part 2', () => {
         const filepath = resolve(pathToDay6Dir, 'puzzleInput.txt');
         const orbitMap = parseOrbitMap(filepath);
-        expect(countOrbitalTransfers(orbitMap)).toEqual(379);
+        expect(countOrbitalTransfers(orbitMap)).toBe(379);
       });
     });
   });

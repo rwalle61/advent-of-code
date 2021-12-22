@@ -129,7 +129,7 @@ const runInstruction = (
   initialState,
   instructionPointer,
   inputs?: number[],
-  relativeBase: number = 0,
+  relativeBase = 0,
 ) => {
   const { opcode, params } = parseInstruction(
     initialState,

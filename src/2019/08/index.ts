@@ -60,7 +60,7 @@ const imageDataToImage = (data: string, width, height): string[] => {
   const layers = imageDataToLayers(data, width, height);
   const image = Array(height)
     .fill(undefined)
-    .map((_) => []); // eslint-disable-line no-unused-vars
+    .map(() => []);
   for (let i = 0; i < width; i++) {
     for (let j = 0; j < height; j++) {
       const pixelsInThisPosition = layers.map((layer) => {
@@ -69,7 +69,7 @@ const imageDataToImage = (data: string, width, height): string[] => {
         return pixel;
       });
       const firstOpaquePixel = pixelsInThisPosition.find(
-        (pixel) => pixel !== pixels.TRANSPARENT,
+        (pixel) => pixel !== pixels.TRANSPARENT
       );
       const pixel = firstOpaquePixel || pixels.TRANSPARENT;
       image[j].push(pixel);

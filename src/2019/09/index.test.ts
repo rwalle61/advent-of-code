@@ -1,9 +1,7 @@
-import {
-  runInstruction,
-  runProgram,
-  runProgramAndGetLastOutput,
-} from '.';
+import { runInstruction, runProgram, runProgramAndGetLastOutput } from '.';
 
+
+// prettier-ignore
 const puzzleInput = [
   1102, 34463338, 34463338, 63,
   1007, 63, 34463338, 63,
@@ -23,95 +21,73 @@ describe('day 9', () => {
   describe('part 1', () => {
     describe('runInstruction(initialState, instructionPointer, inputValue, relativeBase)', () => {
       test('relative base example 1', () => {
-        expect(runInstruction([204, 1], 0, [], 0).output)
-          .toEqual(runInstruction([4, 1], 0, [], 0).output);
+        expect(runInstruction([204, 1], 0, [], 0).output).toEqual(
+          runInstruction([4, 1], 0, [], 0).output
+        );
       });
       test('relative base example 2', () => {
-        expect(runInstruction([204, -50], 0, [], 50))
-          .toMatchObject({
-            newState: [204, -50],
-            output: 204,
-          });
+        expect(runInstruction([204, -50], 0, [], 50)).toMatchObject({
+          newState: [204, -50],
+          output: 204,
+        });
       });
       test('opcode 9 example 1', () => {
-        expect(runInstruction([109, 19], 0, [], 2000))
-          .toMatchObject({
-            newState: [109, 19],
-            newInstructionPointerAddress: 2,
-            newRelativeBase: 2019,
-          });
+        expect(runInstruction([109, 19], 0, [], 2000)).toMatchObject({
+          newState: [109, 19],
+          newInstructionPointerAddress: 2,
+          newRelativeBase: 2019,
+        });
       });
       describe('available memory is larger than the initial program', () => {
         test('write', () => {
-          expect(runInstruction([3, 2], 0, [1]))
-            .toMatchObject({
-              newState: [3, 2, 1],
-            });
+          expect(runInstruction([3, 2], 0, [1])).toMatchObject({
+            newState: [3, 2, 1],
+          });
         });
         test('read', () => {
-          expect(runInstruction([4, 2], 0, []))
-            .toMatchObject({
-              newState: [4, 2],
-              output: 0,
-            });
+          expect(runInstruction([4, 2], 0, [])).toMatchObject({
+            newState: [4, 2],
+            output: 0,
+          });
         });
-        // Skipped because this will never trigger in any examples
-        // test('invalid read (negative memory address)', () => {
-        //   expect(() => runInstruction([4, -1], 0, []))
-        //     .toThrowError();
-        // });
+        test.skip('invalid read (negative memory address)', () => {
+          expect(() => runInstruction([4, -1], 0, [])).toThrow();
+        });
       });
     });
     describe('runProgram(initialState, initialInputs, initialInstructionPointerAddress)', () => {
       test('example 1', () => {
         const program = [
-          109, 1,
-          204, -1,
-          1001, 100, 1, 100,
-          1008, 100, 16, 101,
-          1006, 101, 0,
+          109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0,
           99,
         ];
-        const outputs = runProgram(program)
-          .outputs
-          .filter((output) => output !== undefined);
-        expect(outputs)
-          .toStrictEqual(program);
+        const outputs = runProgram(program).outputs.filter(
+          (output) => output !== undefined
+        );
+        expect(outputs).toStrictEqual(program);
       });
       test('example 2', () => {
-        const program = [
-          1102, 34915192, 34915192, 7,
-          4, 7,
-          99,
-          0,
-        ];
-        expect(runProgram(program))
-          .toMatchObject({
-            outputs: [undefined, 1219070632396864],
-          });
+        const program = [1102, 34915192, 34915192, 7, 4, 7, 99, 0];
+        expect(runProgram(program)).toMatchObject({
+          outputs: [undefined, 1219070632396864],
+        });
       });
       test('example 3', () => {
-        const program = [
-          104, 1125899906842624,
-          99,
-        ];
-        expect(runProgram(program))
-          .toMatchObject({
-            outputs: [1125899906842624],
-          });
+        const program = [104, 1125899906842624, 99];
+        expect(runProgram(program)).toMatchObject({
+          outputs: [1125899906842624],
+        });
       });
     });
-    describe('runProgram(initialState, initialInputs, initialInstructionPointerAddress)', () => {
+    describe('runProgramAndGetLastOutput(initialState, initialInputs, initialInstructionPointerAddress)', () => {
       test('answer part 1', () => {
-        expect(runProgramAndGetLastOutput(puzzleInput, [1]))
-          .toEqual(3335138414);
+        expect(runProgramAndGetLastOutput(puzzleInput, [1])).toBe(3335138414);
       });
     });
   });
   describe('part 2', () => {
     test.skip('answer part 2', () => {
-      expect(runProgramAndGetLastOutput(puzzleInput, [2]))
-        .toEqual(49122);
+      expect(runProgramAndGetLastOutput(puzzleInput, [2])).toBe(49122);
     });
   });
 });

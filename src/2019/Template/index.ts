@@ -1,7 +1,4 @@
-const foo = () => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const foo = () => {};
 
-};
-
-export {
-
-};
+export {};

@@ -20,12 +20,12 @@ describe('day 4', () => {
       expect(findPasswords(123789, 123790)).toStrictEqual([]);
     });
     test('numPasswords(rangeStart, rangeEnd)', () => {
-      expect(numPasswords(111111, 111112)).toEqual(1);
-      expect(numPasswords(223450, 223451)).toEqual(0);
-      expect(numPasswords(123789, 123790)).toEqual(0);
+      expect(numPasswords(111111, 111112)).toBe(1);
+      expect(numPasswords(223450, 223451)).toBe(0);
+      expect(numPasswords(123789, 123790)).toBe(0);
     });
     test('answer', () => {
-      expect(numPasswords(124075, 580769)).toEqual(2150);
+      expect(numPasswords(124075, 580769)).toBe(2150);
     });
   });
   describe('part 2', () => {
@@ -44,10 +44,10 @@ describe('day 4', () => {
       expect(findPasswords2(123444, 123445)).toStrictEqual([]);
     });
     test('numPasswords2(rangeStart, rangeEnd)', () => {
-      expect(numPasswords2(112233, 112234)).toEqual(1);
+      expect(numPasswords2(112233, 112234)).toBe(1);
     });
     test('answer', () => {
-      expect(numPasswords2(124075, 580769)).toEqual(1462);
+      expect(numPasswords2(124075, 580769)).toBe(1462);
     });
   });
 });
