@@ -1,1 +1,1 @@
-export * from '../../utils/intCodeComputer';
+export * from '../intCodeComputer';

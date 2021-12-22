@@ -1,4 +1,4 @@
-import { stringArrayToIntArray, runProgram } from '../../utils/intCodeComputer';
+import { stringArrayToIntArray, runProgram } from '../intCodeComputer';
 
 const runProgramFromStateStringWithInputs = (
   stateString: string,
@@ -8,5 +8,5 @@ const runProgramFromStateStringWithInputs = (
   return runProgram(initialState, inputs);
 };
 
-export * from '../../utils/intCodeComputer';
+export * from '../intCodeComputer';
 export { runProgramFromStateStringWithInputs };

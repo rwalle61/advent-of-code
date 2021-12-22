@@ -1,4 +1,4 @@
-import { deepClone, findLast } from '.';
+import { deepClone, findLast } from '../utils';
 
 enum States {
   STOP = -1,

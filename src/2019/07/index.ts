@@ -1,5 +1,5 @@
 import { deepClone, findLast } from '../../utils';
-import { runProgram } from '../../utils/intCodeComputer';
+import { runProgram } from '../intCodeComputer';
 
 const runAmp = (program, phaseSetting, inputSignal) => {
   const { outputs } = runProgram(program, [phaseSetting, inputSignal]);
@@ -117,7 +117,7 @@ const findMaxThrusterSignalInFeedbackMode = (program) => {
   };
 };
 
-export * from '../../utils/intCodeComputer';
+export * from '../intCodeComputer';
 export {
   runAmp,
   runAmps,

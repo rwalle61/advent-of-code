@@ -1,4 +1,4 @@
-import { stringArrayToIntArray, runProgram } from '../../utils/intCodeComputer';
+import { stringArrayToIntArray, runProgram } from '../intCodeComputer';
 
 const minParamValue = 0;
 const maxParamValue = 99;
@@ -61,7 +61,7 @@ const answerDay2Part2 = (programStateString, targetOutput) => {
   return 100 * nounParam + verbParam;
 };
 
-export * from '../../utils/intCodeComputer';
+export * from '../intCodeComputer';
 export {
   runProgramFromStateString,
   runProgramFromStateStringWithParams,
