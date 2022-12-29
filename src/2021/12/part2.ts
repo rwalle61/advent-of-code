@@ -4,7 +4,7 @@ const findPathsIncludingCaveAndOneSmallCaveTwice = (
   cave: string,
   pathBeforeCave: string[],
   connections: string[][],
-  smallCaveVisitedTwice: string | undefined
+  smallCaveVisitedTwice: string | undefined,
 ): string[][] => {
   const pathIncludingCave = [...pathBeforeCave, cave];
 
@@ -26,7 +26,7 @@ const findPathsIncludingCaveAndOneSmallCaveTwice = (
     ? cave
     : smallCaveVisitedTwice;
 
-  let pathsIncludingCave = [];
+  let pathsIncludingCave: string[][] = [];
 
   connections.forEach(([caveA, caveB]) => {
     if (caveA === cave && caveB !== START_CAVE) {
@@ -34,7 +34,7 @@ const findPathsIncludingCaveAndOneSmallCaveTwice = (
         caveB,
         pathIncludingCave,
         connections,
-        newSmallCaveVisitedTwice
+        newSmallCaveVisitedTwice,
       );
 
       pathsIncludingCave = pathsIncludingCave.concat(pathsFromThisCave);
@@ -43,7 +43,7 @@ const findPathsIncludingCaveAndOneSmallCaveTwice = (
         caveA,
         pathIncludingCave,
         connections,
-        newSmallCaveVisitedTwice
+        newSmallCaveVisitedTwice,
       );
 
       pathsIncludingCave = pathsIncludingCave.concat(pathsFromThisCave);
@@ -54,7 +54,7 @@ const findPathsIncludingCaveAndOneSmallCaveTwice = (
 };
 
 export const countPathsIncludingOneSmallCaveTwice = (
-  rawConnections: string
+  rawConnections: string,
 ): number => {
   const connections = rawConnections
     .trim()
@@ -65,7 +65,7 @@ export const countPathsIncludingOneSmallCaveTwice = (
     START_CAVE,
     [],
     connections,
-    undefined
+    undefined,
   );
 
   return paths.length;

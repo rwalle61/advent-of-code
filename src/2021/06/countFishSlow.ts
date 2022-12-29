@@ -29,7 +29,7 @@ const countDescendants = (fishTimer: number, daysRemaining: number): number => {
 
 export const countFishSlow = (
   school: School,
-  daysRemaining: number
+  daysRemaining: number,
 ): number => {
   let count = school.length;
 

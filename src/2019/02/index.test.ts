@@ -58,7 +58,7 @@ describe('day 2', () => {
         // eslint-disable-line no-restricted-syntax
         test(t.program.toString(), () => {
           expect(runProgram(t.program).newState).toStrictEqual(
-            t.expectedOutput
+            t.expectedOutput,
           );
         });
       }
@@ -66,12 +66,12 @@ describe('day 2', () => {
     describe('runProgramFromStateString(<stateString>)', () => {
       test('<part1ExampleInput>', () => {
         expect(
-          runProgramFromStateString(part1ExampleInput).newState
+          runProgramFromStateString(part1ExampleInput).newState,
         ).toStrictEqual([3500, 9, 10, 70, 2, 3, 11, 0, 99, 30, 40, 50]);
       });
       test('(<puzzleInput>)', () => {
         expect(
-          runProgramFromStateStringWithParams(puzzleInput, 12, 2).newState
+          runProgramFromStateStringWithParams(puzzleInput, 12, 2).newState,
         ).toStrictEqual([
           3166704, 12, 2, 2, 1, 1, 2, 3, 1, 3, 4, 3, 1, 5, 0, 3, 2, 1, 9, 36, 1,
           19, 5, 37, 2, 6, 23, 74, 1, 6, 27, 76, 2, 31, 9, 228, 1, 35, 6, 230,
@@ -91,12 +91,12 @@ describe('day 2', () => {
     describe('findParamsThatProduceOutput(programStateString, <targetOutput>)', () => {
       test('<answer to part 1>', () => {
         expect(findParamsThatProduceOutput(puzzleInput, 3166704)).toStrictEqual(
-          [12, 2]
+          [12, 2],
         );
       });
       test('<answer to part 2>', () => {
         expect(
-          findParamsThatProduceOutput(puzzleInput, 19690720)
+          findParamsThatProduceOutput(puzzleInput, 19690720),
         ).toStrictEqual([80, 18]);
       });
     });

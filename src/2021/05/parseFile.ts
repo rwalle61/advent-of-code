@@ -10,7 +10,7 @@ export const parseFile = (filepath: string): VentLine[] => {
     const [[x1, y1], [x2, y2]] = line
       .split(' -> ')
       .map((coordinates) =>
-        coordinates.split(',').map((coordinate) => parseInt(coordinate, 10))
+        coordinates.split(',').map((coordinate) => parseInt(coordinate, 10)),
       );
     return {
       x1,

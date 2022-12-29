@@ -1,6 +1,6 @@
-const toInt = (char) => parseInt(char, 10);
+const toInt = (char: string) => parseInt(char, 10);
 
-const isValidPassword = (number) => {
+export const isValidPassword = (number: number) => {
   const arr = number.toString().split('');
   let are2AdjacentDigitsSame = false;
   for (let i = 0; i < arr.length; i++) {
@@ -18,7 +18,7 @@ const isValidPassword = (number) => {
   return are2AdjacentDigitsSame;
 };
 
-const findPasswords = (rangeStart, rangeEnd) => {
+export const findPasswords = (rangeStart: number, rangeEnd: number) => {
   const passwords = [];
   for (let i = rangeStart; i < rangeEnd; i++) {
     if (isValidPassword(i)) {
@@ -28,10 +28,10 @@ const findPasswords = (rangeStart, rangeEnd) => {
   return passwords;
 };
 
-const numPasswords = (rangeStart, rangeEnd) =>
+export const numPasswords = (rangeStart: number, rangeEnd: number) =>
   findPasswords(rangeStart, rangeEnd).length;
 
-const isValidPassword2 = (number) => {
+export const isValidPassword2 = (number: number) => {
   const arr = number.toString().split('');
   let are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = false;
   for (let i = 0; i < arr.length; i++) {
@@ -59,7 +59,7 @@ const isValidPassword2 = (number) => {
   return are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits;
 };
 
-const findPasswords2 = (rangeStart, rangeEnd) => {
+export const findPasswords2 = (rangeStart: number, rangeEnd: number) => {
   const passwords = [];
   for (let i = rangeStart; i < rangeEnd; i++) {
     if (isValidPassword2(i)) {
@@ -69,14 +69,5 @@ const findPasswords2 = (rangeStart, rangeEnd) => {
   return passwords;
 };
 
-const numPasswords2 = (rangeStart, rangeEnd) =>
+export const numPasswords2 = (rangeStart: number, rangeEnd: number) =>
   findPasswords2(rangeStart, rangeEnd).length;
-
-export {
-  isValidPassword,
-  findPasswords,
-  numPasswords,
-  isValidPassword2,
-  findPasswords2,
-  numPasswords2,
-};

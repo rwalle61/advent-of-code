@@ -14,7 +14,7 @@ export const parseFile = (filepath: string): BingoInstructions => {
         .replace(/ {2}/g, ' ')
         .split(' ')
         .filter((element) => element !== '')
-        .map((numberString) => parseInt(numberString, 10))
+        .map((numberString) => parseInt(numberString, 10)),
     );
     return board;
   });

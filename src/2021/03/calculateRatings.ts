@@ -1,6 +1,6 @@
 const findOxygenGeneratorRating = (
   numbers: string[],
-  index: number
+  index: number,
 ): number => {
   if (numbers.length === 1) {
     return parseInt(numbers[0], 2);
@@ -21,7 +21,7 @@ const findOxygenGeneratorRating = (
   const mostCommonValue = num0Bits > num1Bits ? '0' : '1';
 
   const remainingNumbers = numbers.filter(
-    (binaryNumber) => binaryNumber.charAt(index) === mostCommonValue
+    (binaryNumber) => binaryNumber.charAt(index) === mostCommonValue,
   );
 
   return findOxygenGeneratorRating(remainingNumbers, index + 1);
@@ -47,7 +47,7 @@ const findCO2ScrubberRating = (numbers: string[], index: number): number => {
   const leastCommonValue = num0Bits > num1Bits ? '1' : '0';
 
   const remainingNumbers = numbers.filter(
-    (binaryNumber) => binaryNumber.charAt(index) === leastCommonValue
+    (binaryNumber) => binaryNumber.charAt(index) === leastCommonValue,
   );
 
   return findCO2ScrubberRating(remainingNumbers, index + 1);

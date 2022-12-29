@@ -8,14 +8,14 @@ export const add = (element: string, counts: Counts, amount: number): void => {
 export const subtract = (
   element: string,
   counts: Counts,
-  amount: number
+  amount: number,
 ): void => {
   add(element, counts, -amount);
 };
 
 export const parseInstructions = (
-  rawInstructions: string
-): { polymerTemplate; rules } => {
+  rawInstructions: string,
+): { polymerTemplate: string; rules: Record<string, string> } => {
   const [[polymerTemplate], rawRules] = rawInstructions
     .trim()
     .split('\n\n')
@@ -31,13 +31,13 @@ export const parseInstructions = (
 
 export const growPolymer = (
   rawInstructions: string,
-  steps: number
+  steps: number,
 ): { polymer: string; elementCounts: Counts } => {
   const { polymerTemplate, rules } = parseInstructions(rawInstructions);
 
   const elementCounts: Counts = {};
 
-  polymerTemplate.split('').forEach((element) => {
+  polymerTemplate.split('').forEach((element: string) => {
     add(element, elementCounts, 1);
   });
 
@@ -64,7 +64,7 @@ export const growPolymer = (
 
 export const getElementQuantityRangeSlow = (
   rawInstructions: string,
-  steps: number
+  steps: number,
 ): number => {
   const { elementCounts } = growPolymer(rawInstructions, steps);
 

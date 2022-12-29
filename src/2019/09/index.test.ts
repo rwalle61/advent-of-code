@@ -21,7 +21,7 @@ describe('day 9', () => {
     describe('runInstruction(initialState, instructionPointer, inputValue, relativeBase)', () => {
       test('relative base example 1', () => {
         expect(runInstruction([204, 1], 0, [], 0).output).toEqual(
-          runInstruction([4, 1], 0, [], 0).output
+          runInstruction([4, 1], 0, [], 0).output,
         );
       });
       test('relative base example 2', () => {
@@ -61,7 +61,7 @@ describe('day 9', () => {
           99,
         ];
         const outputs = runProgram(program).outputs.filter(
-          (output) => output !== undefined
+          (output) => output !== undefined,
         );
         expect(outputs).toStrictEqual(program);
       });

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "downlevelIteration": true,
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "strict": true
   }
 }

@@ -24,7 +24,7 @@ export const foldIntoLetters = (rawInstructions: string): string => {
 
   const foldedDots = foldLines.reduce(
     (currentDots, foldLine) => currentDots.map((dot) => foldDot(dot, foldLine)),
-    dots
+    dots,
   );
 
   const letters = drawLetters(foldedDots);

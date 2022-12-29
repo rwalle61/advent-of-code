@@ -18,7 +18,7 @@ describe('part 1', () => {
   test('calculateFuelRequiredForMasses', () => {
     const input = readFileSync(
       resolve(__dirname, 'part1ExampleInput.txt'),
-      'utf8'
+      'utf8',
     );
     expect(calculateFuelRequiredForMasses(input)).toBe(2 + 2 + 654 + 33583);
   });
@@ -37,10 +37,10 @@ describe('part 2', () => {
   test('calculateFuelRequiredForMassesAndTheirFuel', () => {
     const input = readFileSync(
       resolve(__dirname, 'part2ExampleInput.txt'),
-      'utf8'
+      'utf8',
     );
     expect(calculateFuelRequiredForMassesAndTheirFuel(input)).toBe(
-      2 + 966 + 50346
+      2 + 966 + 50346,
     );
   });
   test('answer', () => {

@@ -2,7 +2,7 @@ import { add, Counts, parseInstructions, subtract } from './part1';
 
 export const countElements = (
   rawInstructions: string,
-  steps: number
+  steps: number,
 ): Counts => {
   const { polymerTemplate, rules } = parseInstructions(rawInstructions);
 
@@ -45,7 +45,7 @@ export const countElements = (
 
 export const getElementQuantityRangeFast = (
   rawInstructions: string,
-  steps: number
+  steps: number,
 ): number => {
   const elementCounts = countElements(rawInstructions, steps);
 

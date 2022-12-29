@@ -22,8 +22,8 @@ const toDepthMeasurementIncreases = (report: number[]): number[] =>
     const windowDepth =
       firstDepthInWindow + secondDepthInWindow + thirdDepthInWindow;
     return currentWindowDepths.concat(windowDepth);
-  }, []);
+  }, [] as number[]);
 
 export const getDepthMeasurementIncreasesAcrossWindows = (
-  report: number[]
+  report: number[],
 ): number => getDepthMeasurementIncreases(toDepthMeasurementIncreases(report));

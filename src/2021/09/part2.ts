@@ -73,7 +73,7 @@ export const multiply3LargestBasinSizes = (rawMap: string): number => {
   const basinSizes = getBasinSizes(map);
 
   const sortedBasinSizes = [...basinSizes].sort(
-    (sizeA, sizeB) => sizeB - sizeA
+    (sizeA, sizeB) => sizeB - sizeA,
   );
 
   const [largestBasinSize, secondLargestBasinSize, thirdLargestBasinSize] =

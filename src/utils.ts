@@ -5,14 +5,15 @@ export const sum = (array: number[]): number =>
 
 export const unique = <T>(array: T[]): T[] => [...new Set(array)];
 
-export const deepClone = (obj: unknown) =>
+export const deepClone = <T>(obj: T): T =>
   obj ? JSON.parse(JSON.stringify(obj)) : obj;
 
 export const findLast = <T>(
   array: T[],
-  condition: (element: T) => boolean
+  condition: (element: T) => boolean,
 ): T =>
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   array
     .slice()
     .reverse()
-    .find((element) => condition(element));
+    .find((element) => condition(element))!;

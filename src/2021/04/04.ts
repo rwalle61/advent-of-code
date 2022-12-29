@@ -5,7 +5,7 @@ export type Board = number[][];
 export type BingoInstructions = { drawOrder: number[]; boards: Board[] };
 
 const hasWon = (board: Board, drawnNumbers: number[]): boolean => {
-  const isUnmarkedNumber = (number) => !drawnNumbers.includes(number);
+  const isUnmarkedNumber = (number: number) => !drawnNumbers.includes(number);
   const hasWinningRow = board.some((row) => !row.some(isUnmarkedNumber));
   if (hasWinningRow) {
     return true;
@@ -21,7 +21,7 @@ const hasWon = (board: Board, drawnNumbers: number[]): boolean => {
 };
 
 const calculateScore = (board: Board, drawnNumbers: number[]): number => {
-  const isUnmarkedNumber = (number) => !drawnNumbers.includes(number);
+  const isUnmarkedNumber = (number: number) => !drawnNumbers.includes(number);
   const unmarkedNumbers = board.flat().filter(isUnmarkedNumber);
   const winningNumber = drawnNumbers[drawnNumbers.length - 1];
   return sum(unmarkedNumbers) * winningNumber;
@@ -31,7 +31,7 @@ export const calculateFirstWinningScore = ({
   drawOrder,
   boards,
 }: BingoInstructions): number => {
-  const drawnNumbers = [];
+  const drawnNumbers: number[] = [];
 
   for (const number of drawOrder) {
     drawnNumbers.push(number);
@@ -51,7 +51,7 @@ export const calculateLastWinningScore = ({
   drawOrder,
   boards,
 }: BingoInstructions): number => {
-  const drawnNumbers = [];
+  const drawnNumbers: number[] = [];
   let remainingBoards = [...boards];
   let lastWinningScore = -1;
 
@@ -67,7 +67,7 @@ export const calculateLastWinningScore = ({
       lastWinningScore = calculateScore(winningBoard, drawnNumbers);
       remainingBoards = remainingBoards.filter(
         // eslint-disable-next-line @typescript-eslint/no-loop-func
-        (board, index) => index !== winningBoardIndex
+        (board, index) => index !== winningBoardIndex,
       );
       winningBoardIndex = remainingBoards.findIndex(isWinningBoard);
     }

@@ -29,10 +29,10 @@ describe('part 1', () => {
     expect(growPolymer(exampleInstructions, 1).polymer).toBe('NCNBCHB');
     expect(growPolymer(exampleInstructions, 2).polymer).toBe('NBCCNBBBCBHCB');
     expect(growPolymer(exampleInstructions, 3).polymer).toBe(
-      'NBBBCNCCNBBNBNBBCHBHHBCHB'
+      'NBBBCNCCNBBNBNBBCHBHHBCHB',
     );
     expect(growPolymer(exampleInstructions, 4).polymer).toBe(
-      'NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB'
+      'NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB',
     );
   });
 
@@ -89,7 +89,7 @@ describe('part 2', () => {
     expect(getElementQuantityRangeFast(exampleInstructions, 10)).toBe(1588);
 
     expect(getElementQuantityRangeFast(exampleInstructions, 40)).toBe(
-      2188189693529
+      2188189693529,
     );
   });
 

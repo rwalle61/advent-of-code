@@ -5,7 +5,7 @@ export type Dot = [number, number];
 type FoldLine = readonly [string, number];
 
 export const parseFoldInstructions = (
-  rawInstructions: string
+  rawInstructions: string,
 ): { dots: Dot[]; foldLines: FoldLine[] } => {
   const [rawDots, rawFoldInstructions] = rawInstructions
     .trim()
@@ -13,7 +13,7 @@ export const parseFoldInstructions = (
     .map((section) => section.split('\n'));
 
   const dots = rawDots.map(
-    (line) => line.split(',').map(parseDecimalInt) as Dot
+    (line) => line.split(',').map(parseDecimalInt) as Dot,
   );
 
   const foldLines = rawFoldInstructions
@@ -28,7 +28,7 @@ export const parseFoldInstructions = (
 
 const foldDotCoordinate = (
   dotCoordinate: number,
-  foldCoordinate: number
+  foldCoordinate: number,
 ): number => {
   const paperLength = 2 * foldCoordinate;
   return dotCoordinate < foldCoordinate

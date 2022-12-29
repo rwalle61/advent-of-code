@@ -17,12 +17,12 @@ const hexToBinary = {
   D: '1101',
   E: '1110',
   F: '1111',
-};
+} as const;
 
 const parseHexStringToBinary = (hexString: string) =>
   hexString
     .split('')
-    .map((hexDigit) => hexToBinary[hexDigit])
+    .map((hexDigit) => hexToBinary[hexDigit as keyof typeof hexToBinary])
     .join('');
 
 const binaryToDecimal = (binaryString: string): number =>
@@ -46,7 +46,7 @@ enum LengthTypeId {
 
 const reduce = (
   subpacketValues: number[],
-  packetTypeId: PacketTypeId,
+  packetTypeId: Exclude<PacketTypeId, PacketTypeId.Literal>,
 ): number => {
   const operations: Record<
     Exclude<PacketTypeId, PacketTypeId.Literal>,
@@ -100,65 +100,57 @@ const decodePacket = (
     };
   }
 
-  if (packetTypeId !== PacketTypeId.Literal) {
-    const lengthTypeId = parseDecimalInt(newBinaryString[0]);
-    newBinaryString = newBinaryString.substring(1);
+  const lengthTypeId = parseDecimalInt(newBinaryString[0]);
+  newBinaryString = newBinaryString.substring(1);
 
-    if (lengthTypeId === LengthTypeId.TotalLengthInBits) {
-      const subpacketsLength = binaryToDecimal(
-        newBinaryString.substring(0, 15),
-      );
-      newBinaryString = newBinaryString.substring(15);
+  if (lengthTypeId === LengthTypeId.TotalLengthInBits) {
+    const subpacketsLength = binaryToDecimal(newBinaryString.substring(0, 15));
+    newBinaryString = newBinaryString.substring(15);
 
-      let binaryStringContainingSubpackets = newBinaryString.substring(
-        0,
-        subpacketsLength,
-      );
-      newBinaryString = newBinaryString.substring(subpacketsLength);
+    let binaryStringContainingSubpackets = newBinaryString.substring(
+      0,
+      subpacketsLength,
+    );
+    newBinaryString = newBinaryString.substring(subpacketsLength);
 
-      const subpacketValues: number[] = [];
-      while (binaryStringContainingSubpackets.length) {
-        const {
-          versions: foundVersions,
-          value: foundValue,
-          newBinaryString: remainingBinaryString,
-        } = decodePacket(binaryStringContainingSubpackets);
-        versions = versions.concat(foundVersions);
-        subpacketValues.push(foundValue);
-        binaryStringContainingSubpackets = remainingBinaryString;
-      }
-
-      const combinedSubpacketsValue = reduce(subpacketValues, packetTypeId);
-
-      return { versions, value: combinedSubpacketsValue, newBinaryString };
+    const subpacketValues: number[] = [];
+    while (binaryStringContainingSubpackets.length) {
+      const {
+        versions: foundVersions,
+        value: foundValue,
+        newBinaryString: remainingBinaryString,
+      } = decodePacket(binaryStringContainingSubpackets);
+      versions = versions.concat(foundVersions);
+      subpacketValues.push(foundValue);
+      binaryStringContainingSubpackets = remainingBinaryString;
     }
 
-    if (lengthTypeId === LengthTypeId.NumberOfImmediateSubpackets) {
-      const numberOfSubpackets = binaryToDecimal(
-        newBinaryString.substring(0, 11),
-      );
-      newBinaryString = newBinaryString.substring(11);
+    const combinedSubpacketsValue = reduce(subpacketValues, packetTypeId);
 
-      const subpacketValues: number[] = [];
-
-      for (let n = 0; n < numberOfSubpackets; n += 1) {
-        const {
-          versions: foundVersions,
-          value: foundValue,
-          newBinaryString: remainingBinaryString,
-        } = decodePacket(newBinaryString);
-        versions = versions.concat(foundVersions);
-        subpacketValues.push(foundValue);
-        newBinaryString = remainingBinaryString;
-      }
-
-      const combinedSubpacketsValue = reduce(subpacketValues, packetTypeId);
-
-      return { versions, value: combinedSubpacketsValue, newBinaryString };
-    }
+    return { versions, value: combinedSubpacketsValue, newBinaryString };
   }
 
-  return null;
+  // if (lengthTypeId === LengthTypeId.NumberOfImmediateSubpackets) {
+  const numberOfSubpackets = binaryToDecimal(newBinaryString.substring(0, 11));
+  newBinaryString = newBinaryString.substring(11);
+
+  const subpacketValues: number[] = [];
+
+  for (let n = 0; n < numberOfSubpackets; n += 1) {
+    const {
+      versions: foundVersions,
+      value: foundValue,
+      newBinaryString: remainingBinaryString,
+    } = decodePacket(newBinaryString);
+    versions = versions.concat(foundVersions);
+    subpacketValues.push(foundValue);
+    newBinaryString = remainingBinaryString;
+  }
+
+  const combinedSubpacketsValue = reduce(subpacketValues, packetTypeId);
+
+  return { versions, value: combinedSubpacketsValue, newBinaryString };
+  // }
 };
 
 export const sumVersionNumbersHex = (hexString: string): number => {

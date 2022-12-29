@@ -28,7 +28,7 @@ const incrementIfInGrid = (x: number, y: number, grid: Grid) => {
 export const incrementAllOctopuses = (
   gridHeight: number,
   gridWidth: number,
-  grid: Grid
+  grid: Grid,
 ) => {
   for (let j = 0; j < gridHeight; j += 1) {
     for (let i = 0; i < gridWidth; i += 1) {
@@ -65,7 +65,7 @@ const isFlashedOctopus = (i: number, j: number, grid: Grid) =>
 export const resetFlashedOctopuses = (
   gridHeight: number,
   gridWidth: number,
-  grid: Grid
+  grid: Grid,
 ) => {
   for (let j = 0; j < gridHeight; j += 1) {
     for (let i = 0; i < gridWidth; i += 1) {
@@ -78,7 +78,7 @@ export const resetFlashedOctopuses = (
 
 export const simulate = (
   rawGrid: string,
-  steps: number
+  steps: number,
 ): { newRawGrid: string; totalFlashes: number } => {
   const grid = parseGrid(rawGrid);
 

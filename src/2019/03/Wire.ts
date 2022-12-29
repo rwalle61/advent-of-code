@@ -1,9 +1,9 @@
 import Point from './Point';
 
-const intersectsWithWire = (point: Point, wire) =>
+const intersectsWithWire = (point: Point, wire: Wire) =>
   wire.points.some((point2) => point.isAt(point2));
 
-const parseWirePath = (wirePathString) => wirePathString.split(',');
+const parseWirePath = (wirePathString: string) => wirePathString.split(',');
 
 export default class Wire {
   public points: Array<Point>;
@@ -12,7 +12,7 @@ export default class Wire {
 
   private currentY: number;
 
-  constructor(wirePathString) {
+  constructor(wirePathString: string) {
     this.currentX = 0;
     this.currentY = 0;
     this.points = [];
@@ -20,13 +20,13 @@ export default class Wire {
     this.extendAlongPath(wirePath);
   }
 
-  extendAlongPath(path) {
-    path.forEach((instruction) => {
+  extendAlongPath(path: string[]) {
+    path.forEach((instruction: string) => {
       this.extendAlongInstruction(instruction);
     });
   }
 
-  extendAlongInstruction(instruction) {
+  extendAlongInstruction(instruction: string) {
     const direction = instruction[0];
     const extensionLength = parseInt(instruction.substr(1), 10);
     for (let i = 0; i < extensionLength; i++) {
@@ -55,7 +55,7 @@ export default class Wire {
     }
   }
 
-  findIntersects(wire2) {
+  findIntersects(wire2: Wire) {
     return this.points.filter((point1) => intersectsWithWire(point1, wire2));
   }
 

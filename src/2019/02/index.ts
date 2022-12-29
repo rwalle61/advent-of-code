@@ -3,15 +3,15 @@ import { stringArrayToIntArray, runProgram } from '../intCodeComputer';
 const minParamValue = 0;
 const maxParamValue = 99;
 
-const runProgramFromStateString = (stateString) => {
+export const runProgramFromStateString = (stateString: string) => {
   const initialState = stringArrayToIntArray(stateString);
   return runProgram(initialState);
 };
 
-const runProgramFromStateStringWithParams = (
-  stateString,
-  nounParam,
-  verbParam
+export const runProgramFromStateStringWithParams = (
+  stateString: string,
+  nounParam: number,
+  verbParam: number,
 ) => {
   const initialState = stringArrayToIntArray(stateString);
   initialState[1] = nounParam;
@@ -19,20 +19,23 @@ const runProgramFromStateStringWithParams = (
   return runProgram(initialState);
 };
 
-const runProgramAndGetFirstValue = (
-  programStateString,
-  nounParam,
-  verbParam
+export const runProgramAndGetFirstValue = (
+  programStateString: string,
+  nounParam: number,
+  verbParam: number,
 ) => {
   const { newState: finalState } = runProgramFromStateStringWithParams(
     programStateString,
     nounParam,
-    verbParam
+    verbParam,
   );
   return finalState[0];
 };
 
-const findParamsThatProduceOutput = (programStateString, targetOutput) => {
+export const findParamsThatProduceOutput = (
+  programStateString: string,
+  targetOutput: number,
+) => {
   for (let nounParam = minParamValue; nounParam < maxParamValue; nounParam++) {
     for (
       let verbParam = minParamValue;
@@ -42,7 +45,7 @@ const findParamsThatProduceOutput = (programStateString, targetOutput) => {
       const { newState: finalState } = runProgramFromStateStringWithParams(
         programStateString,
         nounParam,
-        verbParam
+        verbParam,
       );
       const output = finalState[0];
       if (output === targetOutput) {
@@ -53,19 +56,15 @@ const findParamsThatProduceOutput = (programStateString, targetOutput) => {
   throw new Error();
 };
 
-const answerDay2Part2 = (programStateString, targetOutput) => {
+export const answerDay2Part2 = (
+  programStateString: string,
+  targetOutput: number,
+) => {
   const [nounParam, verbParam] = findParamsThatProduceOutput(
     programStateString,
-    targetOutput
+    targetOutput,
   );
   return 100 * nounParam + verbParam;
 };
 
 export * from '../intCodeComputer';
-export {
-  runProgramFromStateString,
-  runProgramFromStateStringWithParams,
-  findParamsThatProduceOutput,
-  runProgramAndGetFirstValue,
-  answerDay2Part2,
-};

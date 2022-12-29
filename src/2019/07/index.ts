@@ -1,13 +1,17 @@
 import { deepClone, findLast } from '../../utils';
 import { runProgram } from '../intCodeComputer';
 
-const runAmp = (program, phaseSetting, inputSignal) => {
+export const runAmp = (
+  program: number[],
+  phaseSetting: number,
+  inputSignal: number,
+) => {
   const { outputs } = runProgram(program, [phaseSetting, inputSignal]);
-  const outputSignal = outputs[outputs.length - 1];
+  const outputSignal = outputs[outputs.length - 1]!;
   return outputSignal;
 };
 
-const runAmps = (program, phaseSettingSequence) => {
+export const runAmps = (program: number[], phaseSettingSequence: number[]) => {
   let currentOutputSignal = 0;
   phaseSettingSequence.forEach((phaseSetting) => {
     currentOutputSignal = runAmp(program, phaseSetting, currentOutputSignal);
@@ -15,11 +19,11 @@ const runAmps = (program, phaseSettingSequence) => {
   return currentOutputSignal;
 };
 
-const runAmpInFeedbackMode = (
-  program,
-  phaseSetting,
-  inputSignal,
-  initialInstructionPointerAddress = 0
+export const runAmpInFeedbackMode = (
+  program: number[],
+  phaseSetting: number,
+  inputSignal: number,
+  initialInstructionPointerAddress = 0,
 ) => {
   const inputs =
     initialInstructionPointerAddress === 0
@@ -28,9 +32,9 @@ const runAmpInFeedbackMode = (
   const { newState, outputs, instructionPointer } = runProgram(
     program,
     inputs,
-    initialInstructionPointerAddress
+    initialInstructionPointerAddress,
   );
-  const outputSignal = findLast(outputs, (output) => output !== undefined);
+  const outputSignal = findLast(outputs, (output) => output !== undefined)!;
   return {
     newState,
     outputSignal,
@@ -38,7 +42,10 @@ const runAmpInFeedbackMode = (
   };
 };
 
-const runAmpsInFeedbackMode = (program, phaseSettingSequence) => {
+export const runAmpsInFeedbackMode = (
+  program: number[],
+  phaseSettingSequence: number[],
+) => {
   let currentOutputSignal = 0;
   const numPhaseSettings = phaseSettingSequence.length;
   const amplifierStates = Array(numPhaseSettings).fill({
@@ -51,7 +58,7 @@ const runAmpsInFeedbackMode = (program, phaseSettingSequence) => {
       amplifierStates[i].state,
       phaseSetting,
       currentOutputSignal,
-      amplifierStates[i].instructionPointer
+      amplifierStates[i].instructionPointer,
     );
 
     currentOutputSignal = outputSignal;
@@ -71,9 +78,10 @@ const runAmpsInFeedbackMode = (program, phaseSettingSequence) => {
   return currentOutputSignal;
 };
 
-const duplicatesInArray = (arr) => [...new Set(arr)].length !== arr.length;
+const duplicatesInArray = (arr: unknown[]) =>
+  [...new Set(arr)].length !== arr.length;
 
-const getPermutations = (min, max) => {
+const getPermutations = (min: number, max: number) => {
   const permutations = [];
   for (let i = min; i <= max; i++) {
     for (let j = min; j <= max; j++) {
@@ -92,18 +100,18 @@ const getPermutations = (min, max) => {
   return permutations;
 };
 
-const findMaxThrusterSignal = (program) => {
+export const findMaxThrusterSignal = (program: number[]) => {
   const possiblePhaseSettingSequences = getPermutations(0, 4);
   const thrusterSignals = possiblePhaseSettingSequences.map(
-    (phaseSettingSequence) => runAmps(program, phaseSettingSequence)
+    (phaseSettingSequence) => runAmps(program, phaseSettingSequence),
   );
   return Math.max(...thrusterSignals);
 };
 
-const findMaxThrusterSignalInFeedbackMode = (program) => {
+export const findMaxThrusterSignalInFeedbackMode = (program: number[]) => {
   const possiblePhaseSettingSequences = getPermutations(5, 9);
   let maxThrusterSignal = 0;
-  let phaseSettingSequenceGeneratingMaxSignal = [];
+  let phaseSettingSequenceGeneratingMaxSignal: number[] = [];
   possiblePhaseSettingSequences.forEach((phaseSettingSequence) => {
     const thrusterSignal = runAmpsInFeedbackMode(program, phaseSettingSequence);
     if (thrusterSignal > maxThrusterSignal) {
@@ -118,11 +126,3 @@ const findMaxThrusterSignalInFeedbackMode = (program) => {
 };
 
 export * from '../intCodeComputer';
-export {
-  runAmp,
-  runAmps,
-  runAmpInFeedbackMode,
-  runAmpsInFeedbackMode,
-  findMaxThrusterSignal,
-  findMaxThrusterSignalInFeedbackMode,
-};

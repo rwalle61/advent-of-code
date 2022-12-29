@@ -2,7 +2,7 @@ import { stringArrayToIntArray, runProgram } from '../intCodeComputer';
 
 const runProgramFromStateStringWithInputs = (
   stateString: string,
-  inputs: number[]
+  inputs: number[],
 ) => {
   const initialState = stringArrayToIntArray(stateString);
   return runProgram(initialState, inputs);

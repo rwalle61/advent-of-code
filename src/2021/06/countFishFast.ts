@@ -9,7 +9,7 @@ import { School } from './simulate';
 
 export const countFishFast = (
   school: School,
-  daysRemaining: number
+  daysRemaining: number,
 ): number => {
   const counts: number[] = Array(9).fill(0);
 
@@ -18,7 +18,7 @@ export const countFishFast = (
   });
 
   for (let i = 0; i < daysRemaining; i += 1) {
-    const newCount = counts.shift();
+    const newCount = counts.shift()!;
     counts[6] += newCount;
     counts.push(newCount);
   }

@@ -5,7 +5,7 @@ type Node = readonly [number, number];
 type Grid = number[][];
 
 class NodeRepository {
-  private nodes = new Set();
+  private nodes = new Set<string>();
 
   // eslint-disable-next-line class-methods-use-this
   private serialise([x, y]: Node): string {
@@ -43,7 +43,7 @@ const parseGrid = (rawScannedGrid: string): Grid =>
     .map((row) => row.split('').map(parseDecimalInt));
 
 const findCheapestNode = (costs: Grid, nodes: NodeRepository): Node => {
-  let cheapestNode: Node;
+  let cheapestNode: Node | undefined;
   let cheapestCost = Infinity;
 
   nodes.forEach((node) => {
@@ -55,7 +55,7 @@ const findCheapestNode = (costs: Grid, nodes: NodeRepository): Node => {
     }
   });
 
-  return cheapestNode;
+  return cheapestNode!;
 };
 
 const isInGrid = ([x, y]: Node, weights: Grid) => {

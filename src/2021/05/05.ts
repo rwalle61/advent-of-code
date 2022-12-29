@@ -9,10 +9,10 @@ type Field = number[][];
 
 const createField = (horizontalAndVerticalLines: VentLine[]): Field => {
   const maxX = Math.max(
-    ...horizontalAndVerticalLines.map(({ x1, x2 }) => Math.max(x1, x2))
+    ...horizontalAndVerticalLines.map(({ x1, x2 }) => Math.max(x1, x2)),
   );
   const maxY = Math.max(
-    ...horizontalAndVerticalLines.map(({ y1, y2 }) => Math.max(y1, y2))
+    ...horizontalAndVerticalLines.map(({ y1, y2 }) => Math.max(y1, y2)),
   );
 
   return Array(maxY + 1)
@@ -52,7 +52,7 @@ export const numberOfDangerousPointsPart1 = (lines: VentLine[]): number => {
       if (point >= 2) {
         dangerousPoints += 1;
       }
-    })
+    }),
   );
 
   return dangerousPoints;
@@ -64,7 +64,7 @@ export const numberOfDangerousPointsPart2 = (lines: VentLine[]): number => {
   const horizontalLines = lines.filter(({ y1, y2 }) => y1 === y2);
   const verticalLines = lines.filter(({ x1, x2 }) => x1 === x2);
   const diagonalLines = lines.filter(
-    ({ x1, y1, x2, y2 }) => x1 !== x2 && y1 !== y2
+    ({ x1, y1, x2, y2 }) => x1 !== x2 && y1 !== y2,
   );
 
   const field = createField(lines);
@@ -119,7 +119,7 @@ export const numberOfDangerousPointsPart2 = (lines: VentLine[]): number => {
       if (point >= 2) {
         dangerousPoints += 1;
       }
-    })
+    }),
   );
 
   return dangerousPoints;

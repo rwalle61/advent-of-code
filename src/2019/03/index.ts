@@ -1,16 +1,19 @@
 import Point from './Point';
 import Wire from './Wire';
 
-const findIntersects = (pathOfWire1, pathOfWire2) => {
+export const findIntersects = (pathOfWire1: string, pathOfWire2: string) => {
   const wire1 = new Wire(pathOfWire1);
   const wire2 = new Wire(pathOfWire2);
   return wire1.findIntersects(wire2);
 };
 
-const nearerOrigin = (point1, point2) =>
+const nearerOrigin = (point1: Point, point2: Point) =>
   point1.manhattanDistanceToOrigin() < point2.manhattanDistanceToOrigin();
 
-const findNearestIntersect = (pathOfWire1, pathOfWire2) => {
+export const findNearestIntersect = (
+  pathOfWire1: string,
+  pathOfWire2: string,
+) => {
   const intersects = findIntersects(pathOfWire1, pathOfWire2);
   let nearestIntersect = new Point(999999999, 999999999);
   intersects.forEach((intersect) => {
@@ -21,12 +24,18 @@ const findNearestIntersect = (pathOfWire1, pathOfWire2) => {
   return nearestIntersect;
 };
 
-const findDistanceToNearestIntersect = (pathOfWire1, pathOfWire2) => {
+export const findDistanceToNearestIntersect = (
+  pathOfWire1: string,
+  pathOfWire2: string,
+) => {
   const nearestIntersect = findNearestIntersect(pathOfWire1, pathOfWire2);
   return nearestIntersect.manhattanDistanceToOrigin();
 };
 
-const sumStepsToShortestIntersect = (pathOfWire1, pathOfWire2): number => {
+export const sumStepsToShortestIntersect = (
+  pathOfWire1: string,
+  pathOfWire2: string,
+): number => {
   const wire1 = new Wire(pathOfWire1);
   const wire2 = new Wire(pathOfWire2);
   const intersects = wire1.findIntersects(wire2);
@@ -43,10 +52,4 @@ const sumStepsToShortestIntersect = (pathOfWire1, pathOfWire2): number => {
   return sumOfStepsToShortestIntersect;
 };
 
-export {
-  Wire,
-  findIntersects,
-  findNearestIntersect,
-  findDistanceToNearestIntersect,
-  sumStepsToShortestIntersect,
-};
+export { Wire };

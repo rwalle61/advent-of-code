@@ -237,7 +237,7 @@ describe('day 7', () => {
         ];
         const phaseSettingSequence = [9, 8, 7, 6, 5];
         expect(
-          runAmpsInFeedbackMode(exampleProgram, phaseSettingSequence)
+          runAmpsInFeedbackMode(exampleProgram, phaseSettingSequence),
         ).toBe(139629729);
       });
       test('part 2 example 2', () => {
@@ -249,7 +249,7 @@ describe('day 7', () => {
         ];
         const phaseSettingSequence = [9, 7, 8, 5, 6];
         expect(
-          runAmpsInFeedbackMode(exampleProgram, phaseSettingSequence)
+          runAmpsInFeedbackMode(exampleProgram, phaseSettingSequence),
         ).toBe(18216);
       });
     });
@@ -257,7 +257,7 @@ describe('day 7', () => {
       test('program with no output', () => {
         const exampleProgram = [4, 0];
         expect(
-          findMaxThrusterSignalInFeedbackMode(exampleProgram)
+          findMaxThrusterSignalInFeedbackMode(exampleProgram),
         ).toMatchObject({
           maxThrusterSignal: 4,
           phaseSettingSequenceGeneratingMaxSignal: [5, 6, 7, 8, 9],
@@ -269,7 +269,7 @@ describe('day 7', () => {
           1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5,
         ];
         expect(
-          findMaxThrusterSignalInFeedbackMode(exampleProgram)
+          findMaxThrusterSignalInFeedbackMode(exampleProgram),
         ).toMatchObject({
           maxThrusterSignal: 139629729,
           phaseSettingSequenceGeneratingMaxSignal: [9, 8, 7, 6, 5],
@@ -283,7 +283,7 @@ describe('day 7', () => {
           99, 0, 0, 0, 0, 10,
         ];
         expect(
-          findMaxThrusterSignalInFeedbackMode(exampleProgram)
+          findMaxThrusterSignalInFeedbackMode(exampleProgram),
         ).toMatchObject({
           maxThrusterSignal: 18216,
           phaseSettingSequenceGeneratingMaxSignal: [9, 7, 8, 5, 6],

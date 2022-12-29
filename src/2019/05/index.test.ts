@@ -459,14 +459,14 @@ describe('day 5', () => {
           const input = 8;
           const expectedOutput = 1000;
           expect(runProgram(exampleProgram, [input]).outputs).toContain(
-            expectedOutput
+            expectedOutput,
           );
         });
         test('output 1001 if the input value is greater than 8', () => {
           const input = 9;
           const expectedOutput = 1001;
           expect(runProgram(exampleProgram, [input]).outputs).toContain(
-            expectedOutput
+            expectedOutput,
           );
         });
       });
@@ -475,7 +475,7 @@ describe('day 5', () => {
       test('part 1 example 1', () => {
         const input = 1;
         expect(
-          runProgramFromStateStringWithInputs('3,0,4,0,99', [input])
+          runProgramFromStateStringWithInputs('3,0,4,0,99', [input]),
         ).toMatchObject({
           newState: [input, 0, 4, 0, 99],
           outputs: [undefined, input],
@@ -484,7 +484,7 @@ describe('day 5', () => {
       test('variant of part 1 example 1', () => {
         const input = 5;
         expect(
-          runProgramFromStateStringWithInputs('3,0,4,0,99', [input])
+          runProgramFromStateStringWithInputs('3,0,4,0,99', [input]),
         ).toMatchObject({
           newState: [input, 0, 4, 0, 99],
           outputs: [undefined, input],
@@ -492,7 +492,7 @@ describe('day 5', () => {
       });
       test('answer part 1', () => {
         expect(
-          runProgramFromStateStringWithInputs(puzzleInput, [1])
+          runProgramFromStateStringWithInputs(puzzleInput, [1]),
         ).toMatchObject({
           newState: [
             3, 225, 1, 225, 6, 6, 1101, 1, 238, 225, 104, 0, 101, 14, 135, 224,
@@ -612,7 +612,7 @@ describe('day 5', () => {
       });
       test('answer part 2', () => {
         expect(
-          runProgramFromStateStringWithInputs(puzzleInput, [5])
+          runProgramFromStateStringWithInputs(puzzleInput, [5]),
         ).toMatchObject({
           newState: [
             314, 225, 1, 225, 6, 6, 1105, 1, 238, 225, 104, 0, 101, 14, 135,

@@ -24,10 +24,14 @@ enum ParamModes {
   RELATIVE = 2,
 }
 
-const stringArrayToIntArray = (stateString) =>
+export const stringArrayToIntArray = (stateString: string) =>
   stateString.split(',').map((n) => parseInt(n, 10));
 
-const getParamValue = (programState, paramMode, paramAddress) => {
+const getParamValue = (
+  programState: States[],
+  paramMode: ParamModes,
+  paramAddress: number,
+) => {
   if (paramMode === ParamModes.IMMEDIATE) {
     return paramAddress;
   }
@@ -38,12 +42,12 @@ const getParamValue = (programState, paramMode, paramAddress) => {
 };
 
 const getParams = (
-  programState,
-  instructionPointer,
-  relativeBase,
-  parsedParamModes
+  programState: States[],
+  instructionPointer: number,
+  relativeBase: number,
+  parsedParamModes: number[],
 ) => {
-  const params = {};
+  const params: Record<number, { value: number; writeAddress: number }> = {};
   for (let i = 0; i < 3; i++) {
     const mode = parsedParamModes[i] || ParamModes.POSITION;
     const paramNum = i + 1;
@@ -59,7 +63,7 @@ const getParams = (
   return params;
 };
 
-const parseFirstNumber = (firstNumber) => {
+export const parseFirstNumber = (firstNumber: number) => {
   const firstNumberArr = firstNumber.toString().split('');
   const opcodeStr = firstNumberArr.slice(firstNumberArr.length - 2).join('');
   const opcode = parseInt(opcodeStr, 10);
@@ -73,9 +77,9 @@ const parseFirstNumber = (firstNumber) => {
 };
 
 const parseInstruction = (
-  programState,
-  instructionPointer,
-  relativeBase = 0
+  programState: States[],
+  instructionPointer: number,
+  relativeBase = 0,
 ) => {
   const firstNumber = programState[instructionPointer];
 
@@ -85,13 +89,13 @@ const parseInstruction = (
     programState,
     instructionPointer,
     relativeBase,
-    parsedParamModes
+    parsedParamModes,
   );
 
   return { opcode, params };
 };
 
-const getNumInstructionValues = (opcode) => {
+const getNumInstructionValues = (opcode: Opcodes) => {
   if (
     [
       Opcodes.ADD_PARAMS,
@@ -123,19 +127,19 @@ const getNumInstructionValues = (opcode) => {
   throw new Error();
 };
 
-const runInstruction = (
-  initialState,
-  instructionPointer,
+export const runInstruction = (
+  initialState: States[],
+  instructionPointer: number,
   inputs?: number[],
-  relativeBase = 0
+  relativeBase = 0,
 ) => {
   const { opcode, params } = parseInstruction(
     initialState,
     instructionPointer,
-    relativeBase
+    relativeBase,
   );
 
-  let newState = deepClone(initialState);
+  let newState: States | States[] = deepClone(initialState);
   const remainingInputs = deepClone(inputs);
   let output;
 
@@ -155,8 +159,8 @@ const runInstruction = (
         newState = States.PAUSE;
         break;
       }
-      const input = remainingInputs.shift();
-      newState[params[1].writeAddress] = input;
+      const input = remainingInputs!.shift();
+      newState[params[1].writeAddress] = input!;
       break;
     }
     case Opcodes.OUTPUT:
@@ -198,17 +202,19 @@ const runInstruction = (
   };
 };
 
-const thereAreMoreInstructions = (currentState) =>
-  currentState.instructionPointer + 2 <= currentState.state.length;
+const thereAreMoreInstructions = (currentState: {
+  instructionPointer: number;
+  state: States[];
+}) => currentState.instructionPointer + 2 <= currentState.state.length;
 
-const runProgram = (
-  initialState,
+export const runProgram = (
+  initialState: States[],
   initialInputs: number[] = [],
-  initialInstructionPointerAddress = 0
+  initialInstructionPointerAddress = 0,
 ) => {
   let currentState = {
     state: deepClone(initialState),
-    outputs: [],
+    outputs: [] as (number | undefined)[],
     instructionPointer: initialInstructionPointerAddress,
     inputs: deepClone(initialInputs),
     relativeBase: 0,
@@ -241,7 +247,7 @@ const runProgram = (
       state: deepClone(newState),
       outputs: outputs.concat([output]),
       instructionPointer: newInstructionPointerAddress,
-      inputs: deepClone(remainingInputs),
+      inputs: deepClone(remainingInputs)!,
       relativeBase: newRelativeBase,
     };
   }
@@ -252,24 +258,16 @@ const runProgram = (
   };
 };
 
-const runProgramAndGetLastOutput = (
-  initialState,
+export const runProgramAndGetLastOutput = (
+  initialState: States[],
   initialInputs: number[] = [],
-  initialInstructionPointerAddress = 0
+  initialInstructionPointerAddress = 0,
 ) => {
   const { outputs } = runProgram(
     initialState,
     initialInputs,
-    initialInstructionPointerAddress
+    initialInstructionPointerAddress,
   );
   const lastOutput = findLast(outputs, (output) => output !== undefined);
   return lastOutput;
-};
-
-export {
-  stringArrayToIntArray,
-  parseFirstNumber,
-  runInstruction,
-  runProgram,
-  runProgramAndGetLastOutput,
 };

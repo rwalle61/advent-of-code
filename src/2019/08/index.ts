@@ -4,7 +4,7 @@ const pixels = {
   TRANSPARENT: '2',
 };
 
-const dataToRows = (data: string, width): string[] => {
+export const dataToRows = (data: string, width: number): string[] => {
   const rows = [];
   for (let i = 0; i + width <= data.length; i += width) {
     const row = data.substring(i, i + width);
@@ -13,7 +13,11 @@ const dataToRows = (data: string, width): string[] => {
   return rows;
 };
 
-const imageDataToLayers = (data: string, width, height): Array<string[]> => {
+export const imageDataToLayers = (
+  data: string,
+  width: number,
+  height: number,
+): Array<string[]> => {
   const rows = dataToRows(data, width);
   const layers = [];
   for (let i = 0; i + height <= rows.length; i += height) {
@@ -23,7 +27,7 @@ const imageDataToLayers = (data: string, width, height): Array<string[]> => {
   return layers;
 };
 
-const countDigitsInLayer = (layer: string[], targetDigit) => {
+export const countDigitsInLayer = (layer: string[], targetDigit: string) => {
   let num0Digits = 0;
   layer.forEach((row) => {
     row.split('').forEach((digit) => {
@@ -35,9 +39,13 @@ const countDigitsInLayer = (layer: string[], targetDigit) => {
   return num0Digits;
 };
 
-const getLayerWithFewest0Digits = (data: string, width, height): string[] => {
+export const getLayerWithFewest0Digits = (
+  data: string,
+  width: number,
+  height: number,
+): string[] => {
   const layers = imageDataToLayers(data, width, height);
-  let layerWithFewest0Digits;
+  let layerWithFewest0Digits = layers[0];
   let fewest0Digits = 9999;
   layers.forEach((layer) => {
     const num0DigitsInLayer = countDigitsInLayer(layer, '0');
@@ -49,16 +57,24 @@ const getLayerWithFewest0Digits = (data: string, width, height): string[] => {
   return layerWithFewest0Digits;
 };
 
-const answerPart1 = (data: string, width, height): number => {
+export const answerPart1 = (
+  data: string,
+  width: number,
+  height: number,
+): number => {
   const layerWithFewest0Digits = getLayerWithFewest0Digits(data, width, height);
   const num1DigitsInLayer = countDigitsInLayer(layerWithFewest0Digits, '1');
   const num2DigitsInLayer = countDigitsInLayer(layerWithFewest0Digits, '2');
   return num1DigitsInLayer * num2DigitsInLayer;
 };
 
-const imageDataToImage = (data: string, width, height): string[] => {
+export const imageDataToImage = (
+  data: string,
+  width: number,
+  height: number,
+): string[] => {
   const layers = imageDataToLayers(data, width, height);
-  const image = Array(height)
+  const image: string[][] = Array(height)
     .fill(undefined)
     .map(() => []);
   for (let i = 0; i < width; i++) {
@@ -69,7 +85,7 @@ const imageDataToImage = (data: string, width, height): string[] => {
         return pixel;
       });
       const firstOpaquePixel = pixelsInThisPosition.find(
-        (pixel) => pixel !== pixels.TRANSPARENT
+        (pixel) => pixel !== pixels.TRANSPARENT,
       );
       const pixel = firstOpaquePixel || pixels.TRANSPARENT;
       image[j].push(pixel);
@@ -79,21 +95,15 @@ const imageDataToImage = (data: string, width, height): string[] => {
   return imageStr;
 };
 
-const printImage = (data: string, width, height): string => {
+export const printImage = (
+  data: string,
+  width: number,
+  height: number,
+): string => {
   const imageStr = imageDataToImage(data, width, height);
   const visualImage = imageStr
     .map((row) => row.replace(new RegExp(pixels.WHITE, 'g'), '#'))
     .map((row) => row.replace(new RegExp(pixels.BLACK, 'g'), '.'))
     .join('\n');
   return visualImage;
-};
-
-export {
-  dataToRows,
-  imageDataToLayers,
-  countDigitsInLayer,
-  getLayerWithFewest0Digits,
-  answerPart1,
-  imageDataToImage,
-  printImage,
 };

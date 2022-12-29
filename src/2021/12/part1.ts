@@ -10,7 +10,7 @@ export const isVisitedSmallCave = (cave: string, path: string[]): boolean =>
 const findPathsIncludingCave = (
   cave: string,
   pathBeforeCave: string[],
-  connections: string[][]
+  connections: string[][],
 ): string[][] => {
   if (isVisitedSmallCave(cave, pathBeforeCave)) {
     return [];
@@ -22,14 +22,14 @@ const findPathsIncludingCave = (
     return [pathIncludingCave];
   }
 
-  let pathsIncludingCave = [];
+  let pathsIncludingCave: string[][] = [];
 
   connections.forEach(([caveA, caveB]) => {
     if (caveA === cave) {
       const pathsFromThisCave = findPathsIncludingCave(
         caveB,
         pathIncludingCave,
-        connections
+        connections,
       );
 
       pathsIncludingCave = pathsIncludingCave.concat(pathsFromThisCave);
@@ -37,7 +37,7 @@ const findPathsIncludingCave = (
       const pathsFromThisCave = findPathsIncludingCave(
         caveA,
         pathIncludingCave,
-        connections
+        connections,
       );
 
       pathsIncludingCave = pathsIncludingCave.concat(pathsFromThisCave);
@@ -48,7 +48,7 @@ const findPathsIncludingCave = (
 };
 
 export const countPathsIncludingSmallCavesAtMostOnce = (
-  rawConnections: string
+  rawConnections: string,
 ): number => {
   const connections = rawConnections
     .trim()
