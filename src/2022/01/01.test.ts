@@ -1,4 +1,4 @@
-import { sum } from '../../utils';
+import { parseDecimalInt, sum } from '../../utils';
 import puzzleInput from './puzzleInput';
 
 const exampleInput = `
@@ -46,7 +46,9 @@ describe('part 2', () => {
 
     const caloriesPerElf = inventories.map((inventory: string) =>
       sum(
-        inventory.split('\n').map((itemCalories) => parseInt(itemCalories, 10)),
+        inventory
+          .split('\n')
+          .map((itemCalories) => parseDecimalInt(itemCalories)),
       ),
     );
 

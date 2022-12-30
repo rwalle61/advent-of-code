@@ -159,7 +159,9 @@ export const runInstruction = (
         newState = States.PAUSE;
         break;
       }
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const input = remainingInputs!.shift();
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       newState[params[1].writeAddress] = input!;
       break;
     }
@@ -247,6 +249,7 @@ export const runProgram = (
       state: deepClone(newState),
       outputs: outputs.concat([output]),
       instructionPointer: newInstructionPointerAddress,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       inputs: deepClone(remainingInputs)!,
       relativeBase: newRelativeBase,
     };
@@ -268,6 +271,7 @@ export const runProgramAndGetLastOutput = (
     initialInputs,
     initialInstructionPointerAddress,
   );
-  const lastOutput = findLast(outputs, (output) => output !== undefined);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const lastOutput = findLast(outputs, (output) => output !== undefined)!;
   return lastOutput;
 };

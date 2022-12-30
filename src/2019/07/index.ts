@@ -7,6 +7,7 @@ export const runAmp = (
   inputSignal: number,
 ) => {
   const { outputs } = runProgram(program, [phaseSetting, inputSignal]);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const outputSignal = outputs[outputs.length - 1]!;
   return outputSignal;
 };
@@ -34,6 +35,7 @@ export const runAmpInFeedbackMode = (
     inputs,
     initialInstructionPointerAddress,
   );
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const outputSignal = findLast(outputs, (output) => output !== undefined)!;
   return {
     newState,

@@ -43,7 +43,7 @@ const parseGrid = (rawScannedGrid: string): Grid =>
     .map((row) => row.split('').map(parseDecimalInt));
 
 const findCheapestNode = (costs: Grid, nodes: NodeRepository): Node => {
-  let cheapestNode: Node | undefined;
+  let cheapestNode: Node;
   let cheapestCost = Infinity;
 
   nodes.forEach((node) => {
@@ -55,6 +55,7 @@ const findCheapestNode = (costs: Grid, nodes: NodeRepository): Node => {
     }
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return cheapestNode!;
 };
 

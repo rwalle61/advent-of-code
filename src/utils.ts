@@ -11,9 +11,8 @@ export const deepClone = <T>(obj: T): T =>
 export const findLast = <T>(
   array: T[],
   condition: (element: T) => boolean,
-): T =>
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+): T | undefined =>
   array
     .slice()
     .reverse()
-    .find((element) => condition(element))!;
+    .find((element) => condition(element));
