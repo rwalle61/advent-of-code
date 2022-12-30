@@ -74,9 +74,9 @@ export const imageDataToImage = (
   height: number,
 ): string[] => {
   const layers = imageDataToLayers(data, width, height);
-  const image: string[][] = Array(height)
+  const image = Array(height)
     .fill(undefined)
-    .map(() => []);
+    .map(() => [] as string[]);
   for (let i = 0; i < width; i++) {
     for (let j = 0; j < height; j++) {
       const pixelsInThisPosition = layers.map((layer) => {
