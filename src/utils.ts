@@ -16,3 +16,8 @@ export const findLast = <T>(
     .slice()
     .reverse()
     .find((element) => condition(element));
+
+export const arrayOf = <T>(element: T, length: number): T[] =>
+  Array(length)
+    .fill(undefined)
+    .map(() => deepClone(element));
