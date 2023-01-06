@@ -1,4 +1,4 @@
-import { parseDecimalInt } from '../../utils';
+import { arrayOf, parseDecimalInt } from '../../utils';
 
 type Node = readonly [number, number];
 
@@ -83,10 +83,8 @@ const updateNeighbour = (
     const currentCost = costs[neighbourY][neighbourX];
     const weight = weights[neighbourY][neighbourX];
     const newCost = costs[nodeY][nodeX] + weight;
-    if (newCost < currentCost) {
-      // eslint-disable-next-line no-param-reassign
-      costs[neighbourY][neighbourX] = newCost;
-    }
+    // eslint-disable-next-line no-param-reassign
+    costs[neighbourY][neighbourX] = Math.min(currentCost, newCost);
   }
 };
 
@@ -128,9 +126,7 @@ export const findCostOfCheapestPath = (rawGrid: string): number => {
   const gridWidth = weights[0].length;
   const gridHeight = weights.length;
 
-  const costs: Grid = Array(gridHeight)
-    .fill(null)
-    .map(() => Array(gridWidth).fill(Infinity));
+  const costs: Grid = arrayOf(arrayOf(Infinity, gridWidth), gridHeight);
 
   costs[0][0] = 0;
 

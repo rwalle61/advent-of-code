@@ -1,4 +1,4 @@
-import { deepClone, findLast } from '../../utils';
+import { arrayOf, deepClone, findLast } from '../../utils';
 import { runProgram } from '../intCodeComputer';
 
 export const runAmp = (
@@ -50,10 +50,13 @@ export const runAmpsInFeedbackMode = (
 ) => {
   let currentOutputSignal = 0;
   const numPhaseSettings = phaseSettingSequence.length;
-  const amplifierStates = Array(numPhaseSettings).fill({
-    state: deepClone(program),
-    instructionPointer: 0,
-  });
+  const amplifierStates = arrayOf(
+    {
+      state: deepClone(program),
+      instructionPointer: 0,
+    },
+    numPhaseSettings,
+  );
   for (let i = 0; i < numPhaseSettings; i++) {
     const phaseSetting = phaseSettingSequence[i];
     const { newState, outputSignal, instructionPointer } = runAmpInFeedbackMode(
@@ -67,7 +70,8 @@ export const runAmpsInFeedbackMode = (
 
     amplifierStates[i] = {
       state: newState,
-      instructionPointer,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      instructionPointer: instructionPointer!,
     };
 
     const onLastAmp = i === numPhaseSettings - 1;

@@ -5,8 +5,16 @@ export const sum = (array: number[]): number =>
 
 export const unique = <T>(array: T[]): T[] => [...new Set(array)];
 
-export const deepClone = <T>(obj: T): T =>
-  obj ? JSON.parse(JSON.stringify(obj)) : obj;
+export const deepClone = <T>(obj: T): T => {
+  if (obj && typeof obj !== 'number') {
+    if (Array.isArray(obj)) {
+      return obj.map(deepClone) as unknown as T;
+    }
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  return obj;
+};
 
 export const findLast = <T>(
   array: T[],

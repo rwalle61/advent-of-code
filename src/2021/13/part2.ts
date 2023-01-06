@@ -1,12 +1,11 @@
+import { arrayOf } from '../../utils';
 import { Dot, foldDot, parseFoldInstructions } from './part1';
 
 const drawLetters = (dots: Dot[]): string => {
   const maxWidth = Math.max(...dots.map(([x]) => x)) + 1;
   const maxHeight = Math.max(...dots.map(([, y]) => y)) + 1;
 
-  const dotsGrid = Array(maxHeight)
-    .fill(null)
-    .map(() => Array(maxWidth).fill(' '));
+  const dotsGrid = arrayOf(arrayOf(' ', maxWidth), maxHeight);
 
   for (let j = 0; j < maxHeight; j += 1) {
     for (let i = 0; i < maxWidth; i += 1) {

@@ -1,3 +1,5 @@
+import { arrayOf } from '../../utils';
+
 export type VentLine = { x1: number; y1: number; x2: number; y2: number };
 
 type Field = number[][];
@@ -15,9 +17,7 @@ const createField = (horizontalAndVerticalLines: VentLine[]): Field => {
     ...horizontalAndVerticalLines.map(({ y1, y2 }) => Math.max(y1, y2)),
   );
 
-  return Array(maxY + 1)
-    .fill(null)
-    .map(() => Array(maxX + 1).fill(0));
+  return arrayOf(arrayOf(0, maxX + 1), maxY + 1);
 };
 
 export const numberOfDangerousPointsPart1 = (lines: VentLine[]): number => {
