@@ -1,4 +1,4 @@
-import { sum } from '../../utils';
+import { chunkArray, sum } from '../../utils';
 import puzzleInput from './puzzleInput';
 
 const exampleInput = `
@@ -49,15 +49,6 @@ describe('part 1', () => {
 });
 
 describe('part 2', () => {
-  const chunkArray = <T>(array: T[], chunkSize: number): T[][] => {
-    const chunks: T[][] = [];
-    for (let i = 0; i < array.length; i += chunkSize) {
-      const chunk = array.slice(i, i + chunkSize);
-      chunks.push(chunk);
-    }
-    return chunks;
-  };
-
   const sumPrioritiesOfBadges = (input: string): number => {
     const rucksacks = input.trim().split('\n');
 
