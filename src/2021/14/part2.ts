@@ -1,3 +1,4 @@
+import { range } from '../../utils';
 import { add, Counts, parseInstructions, subtract } from './part1';
 
 export const countElements = (
@@ -13,7 +14,7 @@ export const countElements = (
     add(pair, pairCounts, 1);
   }
 
-  [...Array(steps)].forEach(() => {
+  range(steps).forEach(() => {
     Object.entries(pairCounts).forEach(([pair, count]) => {
       if (count === 0) {
         return;

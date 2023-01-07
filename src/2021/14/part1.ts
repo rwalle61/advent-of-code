@@ -1,3 +1,5 @@
+import { range } from '../../utils';
+
 export type Counts = Record<string, number>;
 
 export const add = (element: string, counts: Counts, amount: number): void => {
@@ -43,7 +45,7 @@ export const growPolymer = (
 
   let polymer = polymerTemplate;
 
-  [...Array(steps)].forEach(() => {
+  range(steps).forEach(() => {
     let newPolymer = '';
 
     for (let i = 0; i < polymer.length - 1; i += 1) {

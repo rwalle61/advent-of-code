@@ -53,10 +53,8 @@ describe('day 2', () => {
           expectedOutput: [2, 0, 0, 0],
         },
       ];
-      // eslint-disable-next-line no-restricted-syntax
       for (const t of tests) {
-        // eslint-disable-line no-restricted-syntax
-        test(t.program.toString(), () => {
+        test(`${t.program.toString()}`, () => {
           expect(runProgram(t.program).newState).toStrictEqual(
             t.expectedOutput,
           );

@@ -67,6 +67,8 @@ export default class Wire {
         return stepsToPoint;
       }
     }
-    throw new Error(`Wire does not contain targetPoint ${targetPoint}`);
+    throw new Error(
+      `Wire does not contain targetPoint ${targetPoint.x}, ${targetPoint.y}`,
+    );
   }
 }

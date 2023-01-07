@@ -57,7 +57,6 @@ describe('part 2', () => {
 
   it('answer', () => {
     const letters = foldIntoLetters(puzzleInput);
-    console.log(letters);
 
     expect(letters).toBe(
       `

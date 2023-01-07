@@ -24,6 +24,7 @@ extends:
   - plugin:jest/recommended
   - plugin:jest/style
   - plugin:@typescript-eslint/recommended
+  - plugin:@typescript-eslint/recommended-requiring-type-checking
   - prettier # must go last, to turn off some previous rules
 
 rules:
@@ -39,11 +40,8 @@ rules:
         - '**/*test*'
   import/extensions: off
   import/prefer-default-export: off
-  import/no-cycle: off
   no-unused-vars": off
   '@typescript-eslint/no-unused-vars': error
   jest/no-disabled-tests: off
-  jest/valid-title: off
   jest/no-commented-out-tests: off
   jest/expect-expect: off
-  jest/no-export: off
