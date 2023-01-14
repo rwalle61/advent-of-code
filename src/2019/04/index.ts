@@ -1,11 +1,11 @@
-const toInt = (char: string) => parseInt(char, 10);
+import { parseDecimalInt } from '../../utils';
 
 export const isValidPassword = (number: number) => {
   const arr = number.toString().split('');
   let are2AdjacentDigitsSame = false;
   for (let i = 0; i < arr.length; i++) {
-    const digit1 = toInt(arr[i]);
-    const digit2 = toInt(arr[i + 1]);
+    const digit1 = parseDecimalInt(arr[i]);
+    const digit2 = parseDecimalInt(arr[i + 1]);
     if (digit1 === digit2) {
       are2AdjacentDigitsSame = true;
     }
@@ -35,21 +35,18 @@ export const isValidPassword2 = (number: number) => {
   const arr = number.toString().split('');
   let are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = false;
   for (let i = 0; i < arr.length; i++) {
-    const digitOnLeft1 = toInt(arr[i - 1]);
-    const digit = toInt(arr[i]);
-    const digitOnRight1 = toInt(arr[i + 1]);
-    const digitOnRight2 = toInt(arr[i + 2]);
+    const digitOnLeft1 = parseDecimalInt(arr[i - 1]);
+    const digit = parseDecimalInt(arr[i]);
+    const digitOnRight1 = parseDecimalInt(arr[i + 1]);
+    const digitOnRight2 = parseDecimalInt(arr[i + 2]);
 
-    if (!are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits) {
-      if (digit === digitOnRight1) {
-        if (digitOnRight1 === digitOnRight2) {
-          are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = false;
-        } else if (digit === digitOnLeft1) {
-          are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = false;
-        } else {
-          are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = true;
-        }
-      }
+    if (
+      !are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits &&
+      digit === digitOnRight1 &&
+      digitOnRight1 !== digitOnRight2 &&
+      digit !== digitOnLeft1
+    ) {
+      are2AdjacentDigitsSameAndDontMatchOtherAdjacentDigits = true;
     }
     const digitsDecrease = digitOnRight1 < digit;
     if (digitsDecrease) {
