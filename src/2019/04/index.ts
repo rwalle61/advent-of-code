@@ -19,7 +19,7 @@ export const isValidPassword = (number: number) => {
 };
 
 export const findPasswords = (rangeStart: number, rangeEnd: number) => {
-  const passwords = [];
+  const passwords: number[] = [];
   for (let i = rangeStart; i < rangeEnd; i++) {
     if (isValidPassword(i)) {
       passwords.push(i);
@@ -60,7 +60,7 @@ export const isValidPassword2 = (number: number) => {
 };
 
 export const findPasswords2 = (rangeStart: number, rangeEnd: number) => {
-  const passwords = [];
+  const passwords: number[] = [];
   for (let i = rangeStart; i < rangeEnd; i++) {
     if (isValidPassword2(i)) {
       passwords.push(i);

@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2021",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
     "downlevelIteration": true,
     "types": ["node", "jest"],
     "strict": true
